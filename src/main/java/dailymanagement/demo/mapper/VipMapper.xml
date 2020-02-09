@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dailymanagement.demo.dao.VipMapper" >
+  <resultMap id="BaseResultMap" type="dailymanagement.demo.bean.Vip" >
+    <id column="vid" property="vid" jdbcType="INTEGER" />
+    <result column="vnam" property="vnam" jdbcType="VARCHAR" />
+    <result column="vaccount" property="vaccount" jdbcType="VARCHAR" />
+    <result column="vpassword" property="vpassword" jdbcType="VARCHAR" />
+    <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    vid, vnam, vaccount, vpassword, end_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from vip
+    where vid = #{vid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from vip
+    where vid = #{vid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="dailymanagement.demo.bean.Vip" >
+    insert into vip (vid, vnam, vaccount, 
+      vpassword, end_time)
+    values (#{vid,jdbcType=INTEGER}, #{vnam,jdbcType=VARCHAR}, #{vaccount,jdbcType=VARCHAR}, 
+      #{vpassword,jdbcType=VARCHAR}, #{endTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="dailymanagement.demo.bean.Vip" >
+    insert into vip
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="vid != null" >
+        vid,
+      </if>
+      <if test="vnam != null" >
+        vnam,
+      </if>
+      <if test="vaccount != null" >
+        vaccount,
+      </if>
+      <if test="vpassword != null" >
+        vpassword,
+      </if>
+      <if test="endTime != null" >
+        end_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="vid != null" >
+        #{vid,jdbcType=INTEGER},
+      </if>
+      <if test="vnam != null" >
+        #{vnam,jdbcType=VARCHAR},
+      </if>
+      <if test="vaccount != null" >
+        #{vaccount,jdbcType=VARCHAR},
+      </if>
+      <if test="vpassword != null" >
+        #{vpassword,jdbcType=VARCHAR},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="dailymanagement.demo.bean.Vip" >
+    update vip
+    <set >
+      <if test="vnam != null" >
+        vnam = #{vnam,jdbcType=VARCHAR},
+      </if>
+      <if test="vaccount != null" >
+        vaccount = #{vaccount,jdbcType=VARCHAR},
+      </if>
+      <if test="vpassword != null" >
+        vpassword = #{vpassword,jdbcType=VARCHAR},
+      </if>
+      <if test="endTime != null" >
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where vid = #{vid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="dailymanagement.demo.bean.Vip" >
+    update vip
+    set vnam = #{vnam,jdbcType=VARCHAR},
+      vaccount = #{vaccount,jdbcType=VARCHAR},
+      vpassword = #{vpassword,jdbcType=VARCHAR},
+      end_time = #{endTime,jdbcType=TIMESTAMP}
+    where vid = #{vid,jdbcType=INTEGER}
+  </update>
+</mapper>
