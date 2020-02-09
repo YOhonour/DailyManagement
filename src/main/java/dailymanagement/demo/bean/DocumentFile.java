@@ -2,14 +2,6 @@ package dailymanagement.demo.bean;
 
 import java.util.Date;
 
-/**
- * 项目文件表
- * fid：文件ID
- * fname：文件名
- * time：时间
- * fpath：文件物理路径
- *
- */
 public class DocumentFile {
     private Integer fid;
 

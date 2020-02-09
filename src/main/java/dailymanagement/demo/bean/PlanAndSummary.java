@@ -2,16 +2,6 @@ package dailymanagement.demo.bean;
 
 import java.util.Date;
 
-/**
- * 计划与总结表
- * id：Id
- * unam：作者
- * writeTime：创建时间
- * updateTime：最后修改时间
- * summary：个人总结
- * plan：工作计划
- *
- */
 public class PlanAndSummary {
     private Integer id;
 

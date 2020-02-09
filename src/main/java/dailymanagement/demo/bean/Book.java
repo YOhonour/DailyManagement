@@ -1,19 +1,6 @@
 package dailymanagement.demo.bean;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
-
-/**
- * 书籍借阅表
- * bid: Id
- * bname: 书名
- * edition: 版本
- * introduction: 简介
- * status: 借出状态(char=2)
- *
- */
 public class Book {
-
     private Integer bid;
 
     private String bname;
@@ -62,16 +49,5 @@ public class Book {
 
     public void setStatus(String status) {
         this.status = status == null ? null : status.trim();
-    }
-
-    @Override
-    public String toString() {
-        return "Book{" +
-                "bid=" + bid +
-                ", bname='" + bname + '\'' +
-                ", edition='" + edition + '\'' +
-                ", introduction='" + introduction + '\'' +
-                ", status='" + status + '\'' +
-                '}';
     }
 }

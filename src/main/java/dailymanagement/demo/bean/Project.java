@@ -2,16 +2,6 @@ package dailymanagement.demo.bean;
 
 import java.util.Date;
 
-/**
- * 项目表
- * pid：项目ID
- * pname：项目名
- * pRealname：牵头人
- * beginTime：创建时间
- * closeTime：结项时间
- * introduction：项目简介
- *
- */
 public class Project {
     private Integer pid;
 

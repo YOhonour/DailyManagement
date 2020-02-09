@@ -15,8 +15,8 @@
         <!--数据库连接的信息：驱动类、连接地址、用户名、密码 -->
         <jdbcConnection driverClass="${jdbc.driverClass}"
                         connectionURL="${jdbc.connectionUrl}"
-                        userId="root"
-                        password="1234">
+                        userId="${jdbc.user}"
+                        password="${jdbc.password}">
         </jdbcConnection>
 
 
