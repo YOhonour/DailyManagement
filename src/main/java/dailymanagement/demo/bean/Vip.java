@@ -2,15 +2,6 @@ package dailymanagement.demo.bean;
 
 import java.util.Date;
 
-/**
- * 会员资源表
- * vid：Id
- * vnam：名称
- * vaccount：账号
- * vpassword：密码
- * endTime：截止时间
- *
- */
 public class Vip {
     private Integer vid;
 

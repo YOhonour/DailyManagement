@@ -1,10 +1,5 @@
 package dailymanagement.demo.bean;
 
-/**
- * 项目文件类型表
- * doctype： 文件类型
- *
- */
 public class DocumentType {
     private String doctype;
 
