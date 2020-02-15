@@ -1,11 +1,15 @@
 package dailymanagement.demo.service;
 
-import dailymanagement.demo.bean.DocumentType;
-import dailymanagement.demo.bean.PlanAndSummary;
-import dailymanagement.demo.bean.Userinfo;
+import dailymanagement.demo.bean.*;
+import dailymanagement.demo.bean.resultbean.BaseProject;
 import dailymanagement.demo.bean.resultbean.PandS;
+import dailymanagement.demo.bean.vo.PlatFormUser;
+import dailymanagement.demo.bean.vo.ProjectDoc;
 import dailymanagement.demo.exception.MyException;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.print.Doc;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -64,8 +68,9 @@ public interface UserService {
     /**
      * 获取用户的所有文档
      * @param username
+     * @return
      */
-    void getUserDoc(String username);
+    List<DocumentFile> getUserDoc(String username);
 
     /**
      * 更新密码
@@ -74,4 +79,67 @@ public interface UserService {
      * @param username
      */
     void updatePassword(String username,String oldpw,String newpw) throws MyException;
+
+    /**
+     * 上传图片
+     * @param files 图片
+     * @param doctype 文件类型
+     * @return 图片的url
+     */
+    List<Integer> uploadFiles(MultipartFile[] files,String doctype,String uname) throws IOException;
+
+
+    /**
+     * 获取文件信息
+     * @param fid 文件id
+     * @return 文件的实际地址
+     */
+    DocumentFile getFile(Integer fid);
+
+    /**
+     * 上传或更新项目
+     * @param project  项目信息
+     */
+    Integer updateProject(Project project);
+
+    /**
+     * 上传图片
+     * @param image
+     * @return
+     */
+    List<String> uploadImages(MultipartFile[] image) throws IOException;
+
+    /**
+     * 获取所有的平台
+     * @return
+     */
+    List<String> getPlatforms();
+
+    /**
+     * 查询平台用户
+     * @param platform
+     * @return
+     */
+    List<PlatFormUser> getPlatformUser(String platform);
+
+    /**
+     * 让文件与项目关联
+     * @param projectDoc
+     */
+    void updateProjectDoc(ProjectDoc projectDoc);
+
+    /**
+     * 获取用户的所有项目
+     * @param username
+     * @return
+     */
+    List<BaseProject> getUserProjects(String username);
+
+    /**
+     * 通过文件类型获取项目的所有文件
+     * @param doctype
+     * @param pid
+     * @return
+     */
+    List<DocumentFile> getProjectDocs(Integer pid,String doctype);
 }

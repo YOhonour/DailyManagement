@@ -1,18 +1,28 @@
 package dailymanagement.demo.bean;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import springfox.documentation.annotations.ApiIgnore;
+
 import java.util.Date;
 
+@ApiModel(description = "计划与总结")
 public class PlanAndSummary {
-    private Integer id;
 
+    private Integer id;
+    @ApiModelProperty("用户名")
     private String unam;
 
+    @ApiModelProperty(value = "写入时间",required = false)
     private Date writeTime;
 
+    @ApiModelProperty(value = "更新",required = false)
     private Date updateTime;
 
+    @ApiModelProperty(value = "总结",required = false)
     private String summary;
 
+    @ApiModelProperty(value = "计划",required = false)
     private String plan;
 
     public Integer getId() {

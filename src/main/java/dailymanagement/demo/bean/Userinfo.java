@@ -1,41 +1,63 @@
 package dailymanagement.demo.bean;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Date;
 
+@ApiModel(description = "用户信息")
 public class Userinfo {
+
+    @ApiModelProperty(value = "用户名",required = true)
     private String unam;
 
+    @ApiModelProperty(value = "用户真实姓名")
     private String realname;
 
+    @ApiModelProperty(value = "用户性别")
     private String sex;
 
+    @ApiModelProperty(value = "头像地址")
     private String upath;
 
+    @ApiModelProperty(value = "学校")
     private String school;
 
+    @ApiModelProperty(value = "专业")
     private String major;
 
+    @ApiModelProperty(value = "生日")
     private Date birthday;
 
+    @ApiModelProperty(value = "加入时间")
     private Date jointime;
 
+    @ApiModelProperty(value = "项目经历")
     private String prjHistory;
 
+    @ApiModelProperty(value = "技能")
     private String skills;
 
+    @ApiModelProperty(value = "证书荣誉")
     private String title;
 
+    @ApiModelProperty(value = "手机号")
     private String phone;
 
+    @ApiModelProperty(value = "QQ号")
     private String qq;
 
+    @ApiModelProperty(value = "微博")
     private String weibo;
 
+    @ApiModelProperty(value = "邮箱")
     private String mail;
 
     private String password;
+
+    @ApiModelProperty(value = "平台")
+    private String platform;
 
     public String getUnam() {
         return unam;
@@ -165,4 +187,13 @@ public class Userinfo {
     public void setPassword(String password) {
         this.password = password == null ? null : password.trim();
     }
+
+    public String getPlatform() {
+        return platform;
+    }
+
+    public void setPlatform(String platform) {
+        this.platform = platform;
+    }
+
 }
