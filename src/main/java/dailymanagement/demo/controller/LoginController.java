@@ -4,6 +4,7 @@ import dailymanagement.demo.annotation.UserLogin;
 import dailymanagement.demo.bean.Userinfo;
 import dailymanagement.demo.exception.MyException;
 import dailymanagement.demo.service.UserService;
+import dailymanagement.demo.utils.JwtUtil;
 import dailymanagement.demo.utils.ResponseResult;
 import dailymanagement.demo.utils.Status;
 import io.swagger.annotations.ApiOperation;
@@ -21,6 +22,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.transform.Result;
+import java.util.HashMap;
 
 /**
  * @author MaYunHao
@@ -31,10 +33,13 @@ import javax.xml.transform.Result;
 @RestController
 public class LoginController {
 
-    private final Logger logger = LoggerFactory.getLogger("ExceptinAspect");
+    private final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
 
     /**
@@ -52,12 +57,11 @@ public class LoginController {
         Userinfo user = userService.login(username, password);
         if(user != null){
             //登陆成功
-            ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-            HttpServletRequest request = sra.getRequest();
-            //在sessin中保存用户
-            request.getSession().setAttribute("user",user);
+            String token = jwtUtil.createToken(user);
             logger.info(username+"登陆成功");
-            return ResponseResult.success();
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("token",token);
+            return ResponseResult.success(token);
         }else{
             logger.error("用户名"+username);
             logger.error("密码"+password);
@@ -65,18 +69,19 @@ public class LoginController {
         }
     }
 
-    @ApiOperation("退出")
+    /**
+     * 在拦截器实现退出
+     * 退出由前端控制
+     * @return
+     */
+/*    @ApiOperation("退出")
     @PostMapping("/loginOut")
     @UserLogin
     public ResponseResult logout(){
         ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = sra.getRequest();
-        Userinfo user = (Userinfo)request.getSession().getAttribute("user");
-        logger.info(user.getUnam()+"退出成功");
-        request.getSession().removeAttribute("user");
-        return ResponseResult.success(user.getUnam());
-    }
-
-
-
+        String unam = (String) request.getAttribute(JwtUtil.UNAM);
+        logger.info(unam+"退出成功");
+        return ResponseResult.success(unam);
+    }*/
 }

@@ -3,6 +3,7 @@ package dailymanagement.demo.config;
 import dailymanagement.demo.interceptor.LoginInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
@@ -12,4 +13,6 @@ public class LoginConfiguration implements WebMvcConfigurer {
         registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**")
                 .excludePathPatterns("/login");
     }
+
+
 }
