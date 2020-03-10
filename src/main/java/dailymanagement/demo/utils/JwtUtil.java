@@ -45,7 +45,7 @@ public class JwtUtil {
 
         TokenUser tokenUser = new TokenUser();
         tokenUser.setRealname(user.getRealname());
-        tokenUser.setUanm(user.getUnam());
+        tokenUser.setUnam(user.getUnam());
         map.put(USER,tokenUser);
         return Jwts.builder()
                 .setHeaderParam("typ", "JWT")

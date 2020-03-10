@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dailymanagement.demo.mapper.ProjectMapper">
+  <resultMap id="BaseResultMap" type="dailymanagement.demo.bean.Project">
+    <id column="pid" jdbcType="INTEGER" property="pid" />
+    <result column="pname" jdbcType="VARCHAR" property="pname" />
+    <result column="p_realname" jdbcType="VARCHAR" property="pRealname" />
+    <result column="begin_time" jdbcType="TIMESTAMP" property="beginTime" />
+    <result column="close_time" jdbcType="TIMESTAMP" property="closeTime" />
+    <result column="introduction" jdbcType="VARCHAR" property="introduction" />
+    <result column="image" jdbcType="VARCHAR" property="image" />
+    <collection property="members" javaType="ArrayList" ofType="java.lang.String" select="getProjectMember" column="pid" >
+      <result column="member" property="members"></result>
+    </collection>
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    pid, pname, p_realname, begin_time, close_time, introduction,image
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from project
+    where pid = #{pid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from project
+    where pid = #{pid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="dailymanagement.demo.bean.Project">
+    insert into project (pid, pname, p_realname, 
+      begin_time, close_time, introduction,image
+      )
+    values (#{pid,jdbcType=INTEGER}, #{pname,jdbcType=VARCHAR}, #{pRealname,jdbcType=VARCHAR}, 
+      #{beginTime,jdbcType=TIMESTAMP}, #{closeTime,jdbcType=TIMESTAMP}, #{introduction,jdbcType=VARCHAR},#{image}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="dailymanagement.demo.bean.Project" keyColumn="pid" keyProperty="pid" useGeneratedKeys="true">
+    insert into project
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pid != null">
+        pid,
+      </if>
+      <if test="pname != null">
+        pname,
+      </if>
+      <if test="pRealname != null">
+        p_realname,
+      </if>
+      <if test="beginTime != null">
+        begin_time,
+      </if>
+      <if test="closeTime != null">
+        close_time,
+      </if>
+      <if test="introduction != null">
+        introduction,
+      </if>
+      <if test="image != null">
+        image,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pid != null">
+        #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="pname != null">
+        #{pname,jdbcType=VARCHAR},
+      </if>
+      <if test="pRealname != null">
+        #{pRealname,jdbcType=VARCHAR},
+      </if>
+      <if test="beginTime != null">
+        #{beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="closeTime != null">
+        #{closeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="introduction != null">
+        #{introduction,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null">
+        #{image},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="dailymanagement.demo.bean.Project">
+    update project
+    <set>
+      <if test="pname != null">
+        pname = #{pname,jdbcType=VARCHAR},
+      </if>
+      <if test="pRealname != null">
+        p_realname = #{pRealname,jdbcType=VARCHAR},
+      </if>
+      <if test="beginTime != null">
+        begin_time = #{beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="closeTime != null">
+        close_time = #{closeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="introduction != null">
+        introduction = #{introduction,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null">
+        iamge = #{image},
+      </if>
+    </set>
+    where pid = #{pid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="dailymanagement.demo.bean.Project">
+    update project
+    set pname = #{pname,jdbcType=VARCHAR},
+      p_realname = #{pRealname,jdbcType=VARCHAR},
+      begin_time = #{beginTime,jdbcType=TIMESTAMP},
+      close_time = #{closeTime,jdbcType=TIMESTAMP},
+      introduction = #{introduction,jdbcType=VARCHAR},
+      image = #{image}
+    where pid = #{pid,jdbcType=INTEGER}
+  </update>
+  <insert id="insertMembers" parameterType="dailymanagement.demo.bean.Project">
+    insert into project_member (pid,member) values
+    <foreach collection="members" item="member" separator=",">
+      (#{pid},#{member})
+    </foreach>
+  </insert>
+  <update id="updateProjectDoc" parameterType="dailymanagement.demo.bean.vo.ProjectDoc">
+    update document_file set p_id = #{pid} where fid =#{fid};
+  </update>
+  <select id="getUserProjects" parameterType="java.lang.String" resultType="dailymanagement.demo.bean.resultbean.BaseProject">
+    select pid,pname,image
+    from project
+    where p_realname = #{username}
+    or pid in (select pid from project_member where member = #{username});
+  </select>
+  <select id="getProjectMember" parameterType="java.lang.Integer">
+    select member from project_member where pid=#{pid};
+  </select>
+</mapper>

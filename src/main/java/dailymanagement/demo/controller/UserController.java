@@ -1,6 +1,5 @@
 package dailymanagement.demo.controller;
 
-import com.sun.org.apache.xpath.internal.operations.Mult;
 import dailymanagement.demo.annotation.UserLogin;
 import dailymanagement.demo.bean.*;
 import dailymanagement.demo.bean.resultbean.BaseProject;
@@ -13,17 +12,10 @@ import dailymanagement.demo.service.UserService;
 import dailymanagement.demo.utils.JwtUtil;
 import dailymanagement.demo.utils.ResponseResult;
 import dailymanagement.demo.utils.Status;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import net.bytebuddy.implementation.bytecode.assign.TypeCasting;
-import org.apache.catalina.User;
-import org.omg.CORBA.PUBLIC_MEMBER;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Profiles;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -31,9 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.xml.ws.Response;
-import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,7 +36,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = "/user")
-@UserLogin(required = true)
+@UserLogin(required = false)
 public class UserController {
 
     @Autowired
@@ -78,7 +67,7 @@ public class UserController {
             ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
             HttpServletRequest request = sra.getRequest();
             TokenUser tokenUser = (TokenUser) request.getAttribute(JwtUtil.USER);
-            user.setUnam(tokenUser.getUanm());
+            user.setUnam(tokenUser.getUnam());
         }
         userService.updateUser(user);
         return ResponseResult.success();
@@ -91,7 +80,7 @@ public class UserController {
         ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = sra.getRequest();
         TokenUser tokenUser = (TokenUser) request.getAttribute(JwtUtil.USER);
-        userService.updatePassword(tokenUser.getUanm(), oldpw, newPw);
+        userService.updatePassword(tokenUser.getUnam(), oldpw, newPw);
         return ResponseResult.success();
     }
 
@@ -156,7 +145,7 @@ public class UserController {
             ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
             HttpServletRequest request = sra.getRequest();
             TokenUser tokenUser = (TokenUser) request.getAttribute(JwtUtil.USER);
-            username = tokenUser.getUanm();
+            username = tokenUser.getUnam();
         }
         List<Integer> ids = userService.uploadFiles(files, doctype,username);
         return ResponseResult.success(ids);
@@ -224,7 +213,6 @@ public class UserController {
             }
         }
         return ResponseEntity.status(400).build();
-
     }
 
     @ApiOperation("上传或更新项目")
@@ -244,7 +232,7 @@ public class UserController {
     }
 
     /**
-     * 未完成
+     * 未完成mm
      *
      * @param username
      * @return
@@ -256,7 +244,7 @@ public class UserController {
             ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
             HttpServletRequest request = sra.getRequest();
             TokenUser tokenUser = (TokenUser) request.getAttribute(JwtUtil.USER);
-            username = tokenUser.getUanm();
+            username = tokenUser.getUnam();
         }
         List<DocumentFile> bps = userService.getUserDoc(username);
         return ResponseResult.success(bps);
@@ -269,7 +257,7 @@ public class UserController {
             ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
             HttpServletRequest request = sra.getRequest();
             TokenUser tokenUser = (TokenUser) request.getAttribute(JwtUtil.USER);
-            username = tokenUser.getUanm();
+            username = tokenUser.getUnam();
         }
         List<BaseProject> bps = userService.getUserProjects(username);
         return ResponseResult.success();
