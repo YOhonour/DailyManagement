@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dailymanagement.demo.mapper.DocumentFileMapper">
+  <resultMap id="BaseResultMap" type="dailymanagement.demo.bean.DocumentFile">
+    <id column="fid" jdbcType="INTEGER" property="fid" />
+    <result column="fname" jdbcType="VARCHAR" property="fname" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
+    <result column="fpath" jdbcType="VARCHAR" property="fpath" />
+    <result column="pid" property="pid"/>
+    <result column="doctype" property="doctype"/>
+    <result column="d_unam" property="dUnam"></result>
+  </resultMap>
+  <sql id="Base_Column_List">
+    fid, fname, `time`, fpath,pid,doctype,d_unam
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from document_file
+    where fid = #{fid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from document_file
+    where fid = #{fid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="dailymanagement.demo.bean.DocumentFile">
+    insert into document_file (fid, fname, time, fpath,doctype,p_id,d_unam)
+    values (#{fid,jdbcType=INTEGER}, #{fname,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}, 
+      #{fpath,jdbcType=VARCHAR},#{doctype},#{pid},#{dUnam})
+  </insert>
+  <insert id="insertSelective" parameterType="dailymanagement.demo.bean.DocumentFile">
+    insert into document_file
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="fid != null">
+        fid,
+      </if>
+      <if test="fname != null">
+        fname,
+      </if>
+      <if test="time != null">
+        time,
+      </if>
+      <if test="fpath != null">
+        fpath,
+      </if>
+      <if test="doctype != null">
+        doctype,
+      </if>
+      <if test="pid != null">
+        p_id,
+      </if>
+      <if test="d_unam != null">
+        d_unam,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="fid != null">
+        #{fid,jdbcType=INTEGER},
+      </if>
+      <if test="fname != null">
+        #{fname,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fpath != null">
+        #{fpath,jdbcType=VARCHAR},
+      </if>
+      <if test="doctype != null">
+      #{doctype},
+      </if>
+      <if test="pid != null">
+     #{pid},
+      </if>
+      <if test="d_realname != null">
+       #{dUnam}
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="dailymanagement.demo.bean.DocumentFile">
+    update document_file
+    <set>
+      <if test="fname != null">
+        fname = #{fname,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fpath != null">
+        fpath = #{fpath,jdbcType=VARCHAR},
+      </if>
+      <if test="doctype != null">
+        doctype = #{doctype},
+      </if>
+      <if test="pid != null">
+        p_id = #{pid},
+      </if>
+    <if test="d_unam != null">
+      d_realname = #{dUnam}
+    </if>
+    </set>
+    where fid = #{fid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="dailymanagement.demo.bean.DocumentFile">
+    update document_file
+    set fname = #{fname,jdbcType=VARCHAR},
+      time = #{time,jdbcType=TIMESTAMP},
+      fpath = #{fpath,jdbcType=VARCHAR},
+      doctype = #{doctype},
+      p_id = #{pid},
+      d_unam = #{dUnam}
+    where fid = #{fid,jdbcType=INTEGER}
+  </update>
+  <select id="getProjectDocs" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"></include>
+    from document_file where pid = #{pid}
+    <if test="doctype !=null">
+      and doctype = #{doctype};
+    </if>
+  </select>
+  <select id="getUserDocs" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"></include>
+    from document_file where d_unam = #{dUnam}
+  </select>
+</mapper>

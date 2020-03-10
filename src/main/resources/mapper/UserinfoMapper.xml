@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dailymanagement.demo.mapper.UserinfoMapper">
+  <resultMap id="BaseResultMap" type="dailymanagement.demo.bean.Userinfo">
+    <id column="unam" jdbcType="VARCHAR" property="unam" />
+    <result column="realname" jdbcType="VARCHAR" property="realname" />
+    <result column="sex" jdbcType="CHAR" property="sex" />
+    <result column="upath" jdbcType="VARCHAR" property="upath" />
+    <result column="school" jdbcType="VARCHAR" property="school" />
+    <result column="major" jdbcType="VARCHAR" property="major" />
+    <result column="birthday" jdbcType="TIMESTAMP" property="birthday" />
+    <result column="jointime" jdbcType="TIMESTAMP" property="jointime" />
+    <result column="prj_history" jdbcType="VARCHAR" property="prjHistory" />
+    <result column="skills" jdbcType="VARCHAR" property="skills" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="phone" jdbcType="CHAR" property="phone" />
+    <result column="qq" jdbcType="CHAR" property="qq" />
+    <result column="weibo" jdbcType="CHAR" property="weibo" />
+    <result column="mail" jdbcType="CHAR" property="mail" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    unam, realname, sex, upath, school, major, birthday, jointime, prj_history, skills, 
+    title, phone, qq, weibo, mail, password
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from userinfo
+    where unam = #{unam,jdbcType=VARCHAR}
+  </select>
+  <select id="login" parameterType="dailymanagement.demo.bean.Userinfo" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from userinfo
+    where unam = #{unam} and password = #{password}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from userinfo
+    where unam = #{unam,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="dailymanagement.demo.bean.Userinfo">
+    insert into userinfo (unam, realname, sex, 
+      upath, school, major, 
+      birthday, jointime, prj_history, 
+      skills, title, phone, 
+      qq, weibo, mail, password
+      )
+    values (#{unam,jdbcType=VARCHAR}, #{realname,jdbcType=VARCHAR}, #{sex,jdbcType=CHAR}, 
+      #{upath,jdbcType=VARCHAR}, #{school,jdbcType=VARCHAR}, #{major,jdbcType=VARCHAR}, 
+      #{birthday,jdbcType=TIMESTAMP}, #{jointime,jdbcType=TIMESTAMP}, #{prjHistory,jdbcType=VARCHAR}, 
+      #{skills,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{phone,jdbcType=CHAR}, 
+      #{qq,jdbcType=CHAR}, #{weibo,jdbcType=CHAR}, #{mail,jdbcType=CHAR}, #{password,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="dailymanagement.demo.bean.Userinfo">
+    insert into userinfo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="unam != null">
+        unam,
+      </if>
+      <if test="realname != null">
+        realname,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="upath != null">
+        upath,
+      </if>
+      <if test="school != null">
+        school,
+      </if>
+      <if test="major != null">
+        major,
+      </if>
+      <if test="birthday != null">
+        birthday,
+      </if>
+      <if test="jointime != null">
+        jointime,
+      </if>
+      <if test="prjHistory != null">
+        prj_history,
+      </if>
+      <if test="skills != null">
+        skills,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="qq != null">
+        qq,
+      </if>
+      <if test="weibo != null">
+        weibo,
+      </if>
+      <if test="mail != null">
+        mail,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="unam != null">
+        #{unam,jdbcType=VARCHAR},
+      </if>
+      <if test="realname != null">
+        #{realname,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=CHAR},
+      </if>
+      <if test="upath != null">
+        #{upath,jdbcType=VARCHAR},
+      </if>
+      <if test="school != null">
+        #{school,jdbcType=VARCHAR},
+      </if>
+      <if test="major != null">
+        #{major,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null">
+        #{birthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="jointime != null">
+        #{jointime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="prjHistory != null">
+        #{prjHistory,jdbcType=VARCHAR},
+      </if>
+      <if test="skills != null">
+        #{skills,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=CHAR},
+      </if>
+      <if test="qq != null">
+        #{qq,jdbcType=CHAR},
+      </if>
+      <if test="weibo != null">
+        #{weibo,jdbcType=CHAR},
+      </if>
+      <if test="mail != null">
+        #{mail,jdbcType=CHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="dailymanagement.demo.bean.Userinfo">
+    update userinfo
+    <set>
+      <if test="realname != null">
+        realname = #{realname,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=CHAR},
+      </if>
+      <if test="upath != null">
+        upath = #{upath,jdbcType=VARCHAR},
+      </if>
+      <if test="school != null">
+        school = #{school,jdbcType=VARCHAR},
+      </if>
+      <if test="major != null">
+        major = #{major,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null">
+        birthday = #{birthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="jointime != null">
+        jointime = #{jointime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="prjHistory != null">
+        prj_history = #{prjHistory,jdbcType=VARCHAR},
+      </if>
+      <if test="skills != null">
+        skills = #{skills,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=CHAR},
+      </if>
+      <if test="qq != null">
+        qq = #{qq,jdbcType=CHAR},
+      </if>
+      <if test="weibo != null">
+        weibo = #{weibo,jdbcType=CHAR},
+      </if>
+      <if test="mail != null">
+        mail = #{mail,jdbcType=CHAR}
+      </if>
+    </set>
+    where unam = #{unam,jdbcType=VARCHAR}
+  </update>
+  <update id="updatePassword">
+    update userinfo set password = #{password} where unam = #{username}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="dailymanagement.demo.bean.Userinfo">
+    update userinfo
+    set realname = #{realname,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=CHAR},
+      upath = #{upath,jdbcType=VARCHAR},
+      school = #{school,jdbcType=VARCHAR},
+      major = #{major,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=TIMESTAMP},
+      jointime = #{jointime,jdbcType=TIMESTAMP},
+      prj_history = #{prjHistory,jdbcType=VARCHAR},
+      skills = #{skills,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=CHAR},
+      qq = #{qq,jdbcType=CHAR},
+      weibo = #{weibo,jdbcType=CHAR},
+      mail = #{mail,jdbcType=CHAR},
+      password = #{password,jdbcType=VARCHAR}
+    where unam = #{unam,jdbcType=VARCHAR}
+  </update>
+
+  <insert id="savefile" parameterType="dailymanagement.demo.bean.DocumentFile" keyColumn="fid" keyProperty="fid" useGeneratedKeys="true">
+    insert into document_file(fname,fpath,`time`,doctype,d_unam) values (#{fname},#{fpath},#{time},#{doctype},#{dUnam});
+  </insert>
+  <select id="getFileById" parameterType="java.lang.Integer" resultType="dailymanagement.demo.bean.DocumentFile">
+    select fname , `time` , fpath,doctype,p_id as pid ,fid,d_unam as dUnam from document_file where fid = #{fid};
+  </select>
+  <select id="getPlatforms" resultType="java.lang.String">
+    select * from platform;
+  </select>
+  <select id="getPlatformUser" resultType="dailymanagement.demo.bean.vo.PlatFormUser">
+    select unam,realname,platform from userinfo
+    <if test="platform != null">
+      where platform = #{platform};
+    </if>
+  </select>
+</mapper>

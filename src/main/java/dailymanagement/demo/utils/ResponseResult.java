@@ -12,6 +12,7 @@ import java.util.Map;
  */
 
 public class ResponseResult<T> implements Serializable {
+
     /**
      * 返回码
      */

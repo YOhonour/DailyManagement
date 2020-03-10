@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dailymanagement.demo.mapper.DocumentTypeMapper">
+  <resultMap id="BaseResultMap" type="dailymanagement.demo.bean.DocumentType">
+    <id column="doctype" jdbcType="VARCHAR" property="doctype" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from document_type
+    where doctype = #{doctype,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="dailymanagement.demo.bean.DocumentType">
+    insert into document_type (doctype)
+    values (#{doctype,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="dailymanagement.demo.bean.DocumentType">
+    insert into document_type
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="doctype != null">
+        doctype,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="doctype != null">
+        #{doctype,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select * from document_type;
+  </select>
+  <select id="select" parameterType="dailymanagement.demo.bean.DocumentType" resultMap="BaseResultMap">
+    select * from document_type where doctype = #{doctype};
+  </select>
+</mapper>

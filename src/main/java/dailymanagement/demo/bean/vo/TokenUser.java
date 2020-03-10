@@ -8,15 +8,15 @@ package dailymanagement.demo.bean.vo;
  */
 
 public class TokenUser {
-    private String uanm;
+    private String unam;
     private String realname;
 
-    public String getUanm() {
-        return uanm;
+    public String getUnam() {
+        return unam;
     }
 
-    public void setUanm(String uanm) {
-        this.uanm = uanm;
+    public void setUnam(String unam) {
+        this.unam = unam;
     }
 
     public String getRealname() {
