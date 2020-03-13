@@ -10,22 +10,32 @@ import java.util.List;
 
 @ApiModel(description = "项目信息表")
 public class Project {
+
     private Integer pid;
 
     @ApiModelProperty(value = "项目名称",required = true)
     private String pname;
+
     @ApiModelProperty(value = "项目牵头人",required = true)
     private String pRealname;
+
     @ApiModelProperty(value = "开始时间",required = true)
     private Date beginTime;
+
     @ApiModelProperty(value = "结项时间",required = false)
     private Date closeTime;
+
     @ApiModelProperty(value = "项目简介",required = true)
     private String introduction;
+
     @ApiModelProperty(value = "项目其他成员",required = true,dataType = "list")
     private List<String> members;
+
     @ApiModelProperty(value = "项目图片url",required = false)
     private String image;
+
+    @ApiModelProperty(value = "项目进度",required = false)
+    private Integer progress;
 
     public Integer getPid() {
         return pid;
@@ -89,5 +99,29 @@ public class Project {
 
     public void setMembers(List<String> members) {
         this.members = members;
+    }
+
+    public Integer getProgress() {
+        return progress;
+    }
+
+    public void setProgress(Integer progress) {
+        this.progress = progress;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Project{" +
+                "pid=" + pid +
+                ", pname='" + pname + '\'' +
+                ", pRealname='" + pRealname + '\'' +
+                ", beginTime=" + beginTime +
+                ", closeTime=" + closeTime +
+                ", introduction='" + introduction + '\'' +
+                ", members=" + members +
+                ", image='" + image + '\'' +
+                ", progress=" + progress +
+                '}';
     }
 }

@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @ApiModel(description = "项目文件信息 关联文件和项目")
 public class ProjectDoc {
+
     @ApiModelProperty("项目的id")
     private Integer pid;
     @ApiModelProperty("文件id")

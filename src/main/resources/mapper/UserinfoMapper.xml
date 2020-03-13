@@ -234,8 +234,9 @@
     select fname , `time` , fpath,doctype,p_id as pid ,fid,d_unam as dUnam from document_file where fid = #{fid};
   </select>
   <select id="getPlatforms" resultType="java.lang.String">
-    select * from platform;
+    select pfname from platform;
   </select>
+
   <select id="getPlatformUser" resultType="dailymanagement.demo.bean.vo.PlatFormUser">
     select unam,realname,platform from userinfo
     <if test="platform != null">

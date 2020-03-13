@@ -9,7 +9,9 @@ import java.util.Date;
 @ApiModel(description = "计划与总结")
 public class PlanAndSummary {
 
+    @ApiModelProperty(value = "计划与总结id",notes = "更新时传")
     private Integer id;
+
     @ApiModelProperty("用户名")
     private String unam;
 

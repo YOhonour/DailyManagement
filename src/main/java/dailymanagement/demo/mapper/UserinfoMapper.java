@@ -6,6 +6,7 @@ import dailymanagement.demo.bean.Userinfo;
 
 import dailymanagement.demo.bean.vo.PlatFormUser;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
@@ -65,7 +66,7 @@ public interface UserinfoMapper {
      * @param platform
      * @return
      */
-    List<PlatFormUser> getPlatformUser(@Nullable String platform);
+    List<PlatFormUser> getPlatformUser(@Nullable @Param(value = "platform") String platform);
 
 
 

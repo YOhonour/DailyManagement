@@ -43,7 +43,7 @@ public interface UserService {
      * 添加或更新工作计划与总结
      * @param pas
      */
-    void updatePaS(PlanAndSummary pas);
+    int updatePaS(PlanAndSummary pas);
 
     /**
      * 通过用户名获取用户所有的工作计划与总结
@@ -142,4 +142,19 @@ public interface UserService {
      * @return
      */
     List<DocumentFile> getProjectDocs(Integer pid,String doctype);
+
+    /**
+     * 删除
+     * @param id
+     * @param username
+     * @return
+     */
+    void deletePlanAndSummary(Integer id, String username);
+
+    /**
+     * 获取项目详情
+     * @param pid
+     * @return
+     */
+    Project getProjectDetail(Integer pid);
 }

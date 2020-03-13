@@ -4,6 +4,7 @@ import dailymanagement.demo.bean.Project;
 import dailymanagement.demo.bean.resultbean.BaseProject;
 import dailymanagement.demo.bean.vo.ProjectDoc;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
@@ -51,7 +52,7 @@ public interface ProjectMapper {
      * @param username
      * @return
      */
-    List<BaseProject> getUserProjects(String username);
+    List<BaseProject> getUserProjects(@Param("username") String username);
 
     /**
      * 获取项目的所有成员
@@ -59,4 +60,10 @@ public interface ProjectMapper {
      * @return
      */
     List<String> getProjectMember(Integer pid);
+
+    /**
+     * 删除项目成员
+     * @param project
+     */
+    void deleteMembers(Project project);
 }

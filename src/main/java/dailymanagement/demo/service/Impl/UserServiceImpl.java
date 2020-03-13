@@ -77,14 +77,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updatePaS(PlanAndSummary pas) {
+    public int updatePaS(PlanAndSummary pas) {
         if (pas.getId() != null) {
-            pas.setWriteTime(new Date());
+            //更新
+            pas.setUpdateTime(new Date());
             planAndSummaryMapper.updateByPrimaryKey(pas);
         } else {
-            pas.setUpdateTime(new Date());
-            planAndSummaryMapper.insert(pas);
+            //插入
+            pas.setWriteTime(new Date());
+            planAndSummaryMapper.insertSelective(pas);
         }
+        return pas.getId();
     }
 
     @Override
@@ -94,6 +97,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public PlanAndSummary getDetailPaS(Integer id, String username) {
+
         return planAndSummaryMapper.selectByPrimaryKey(id, username);
     }
 
@@ -146,11 +150,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public Integer updateProject(Project project) {
         if (project.getPid() != null) {
+            //更新
             projectMapper.updateByPrimaryKeySelective(project);
         } else {
+            //插入
             projectMapper.insertSelective(project);
         }
-        //插入成员
+        //插入成员,先删除后加入
+        projectMapper.deleteMembers(project);
         projectMapper.insertMembers(project);
         return project.getPid();
     }
@@ -189,6 +196,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<DocumentFile> getProjectDocs(Integer pid, String doctype) {
         return documentFileMapper.getProjectDocs(pid,doctype);
+    }
+
+    @Override
+    public void deletePlanAndSummary(Integer id, String username) {
+         planAndSummaryMapper.deleteByPrimaryKey(id,username);
+    }
+
+    @Override
+    public Project getProjectDetail(Integer pid) {
+        return projectMapper.selectByPrimaryKey(pid);
     }
 
     private Integer saveFile(MultipartFile file, String doctype,String uname) throws IOException {

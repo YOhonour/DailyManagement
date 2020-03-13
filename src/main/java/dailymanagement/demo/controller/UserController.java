@@ -12,8 +12,8 @@ import dailymanagement.demo.service.UserService;
 import dailymanagement.demo.utils.JwtUtil;
 import dailymanagement.demo.utils.ResponseResult;
 import dailymanagement.demo.utils.Status;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
+import jdk.nashorn.internal.parser.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,11 +42,40 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    /**
+     * 获取 token 中的用户信息
+     * @return
+     */
+    private TokenUser getTokenUser(){
+        ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = sra.getRequest();
+        TokenUser tokenUser = (TokenUser) request.getAttribute(JwtUtil.USER);
+        if(tokenUser == null){
+            throw new RuntimeException(Status.NOT_LOGIN.getMessage());
+        }
+        return tokenUser;
+    }
+
+    /**
+     * 设置 用户名
+     * @param unam
+     * @return
+     */
+    private String checkAndGetUnam(String unam){
+        if(unam == null || unam.isEmpty()) {
+            TokenUser tokenUser = getTokenUser();
+            unam = tokenUser.getUnam();
+        }
+        return unam;
+    }
+
+
 
     //---------------------------------用户相关---------------------------------
     @ApiOperation("获取用户详细信息")
     @GetMapping("/getUserInfoByUnam")
-    public ResponseResult getUserInfoByUnam(@RequestParam @ApiParam(value = "用户名", required = true) String username) {
+    public ResponseResult getUserInfoByUnam(@RequestParam @ApiParam(value = "用户名:默认是当前用户", required = false) String username) {
+        username = checkAndGetUnam(username);
         Userinfo user = userService.getUserInfoByUnam(username);
         if (user == null) {
             return ResponseResult.failure(Status.NotFound);
@@ -56,19 +85,13 @@ public class UserController {
 
     /**
      * 修改用户信息
-     *
      * @param user
      * @return
      */
     @ApiOperation("修改用户信息但不可修改密码")
     @PostMapping("/updateUser")
     public ResponseResult updateUser(@RequestBody @ApiParam(value = "用户信息", required = true) Userinfo user) throws MyException {
-        if (user.getUnam() == null) {
-            ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-            HttpServletRequest request = sra.getRequest();
-            TokenUser tokenUser = (TokenUser) request.getAttribute(JwtUtil.USER);
-            user.setUnam(tokenUser.getUnam());
-        }
+        user.setUnam(checkAndGetUnam(user.getUnam()));
         userService.updateUser(user);
         return ResponseResult.success();
     }
@@ -77,10 +100,7 @@ public class UserController {
     @PostMapping("/updatePassword")
     public ResponseResult updatePassword(@RequestParam @ApiParam(value = "旧密码", name = "oldpw", required = true) String oldpw,
                                          @RequestParam @ApiParam(value = "新密码", name = "newpw", required = true) String newPw) throws MyException {
-        ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request = sra.getRequest();
-        TokenUser tokenUser = (TokenUser) request.getAttribute(JwtUtil.USER);
-        userService.updatePassword(tokenUser.getUnam(), oldpw, newPw);
+        userService.updatePassword(checkAndGetUnam(null), oldpw, newPw);
         return ResponseResult.success();
     }
 
@@ -103,13 +123,14 @@ public class UserController {
     @ApiOperation("添加或修改工作计划与总结")
     @PostMapping("/updatePlanAndSummary")
     public ResponseResult updatePlanAndSummary(@RequestBody @ApiParam(value = "工作与总结信息", required = true) PlanAndSummary pas) {
-        userService.updatePaS(pas);
-        return ResponseResult.success();
+        int id = userService.updatePaS(pas);
+        return ResponseResult.success(id) ;
     }
 
     @ApiOperation("获取用户的所有工作计划与总结")
     @GetMapping("/getUserPaSs")
-    public ResponseResult getUserPlanAndSummarys(@RequestParam @ApiParam(value = "用户名", required = true) String username) {
+    public ResponseResult getUserPlanAndSummarys(@RequestParam @ApiParam(value = "用户名", required = false) String username) {
+        username = checkAndGetUnam(username);
         List<PandS> list = userService.getUserPaSs(username);
         return ResponseResult.success(list);
     }
@@ -118,8 +139,18 @@ public class UserController {
     @GetMapping("/{id}/getDetailPaS")
     public ResponseResult getDetailPaS(@PathVariable(required = true, value = "id") @ApiParam(value = "工作计划与总结id", required = true) Integer id,
                                        @RequestParam(required = false) @ApiParam(value = "用户名", required = false) String username) {
+        username = checkAndGetUnam(username);
         PlanAndSummary paS = userService.getDetailPaS(id, username);
         return ResponseResult.success(paS);
+    }
+
+    @ApiOperation("删除工作计划与总结")
+    @GetMapping("/{id}/deleteDetailPaS")
+    public ResponseResult deletePlanAndSummary(@PathVariable(required = true, value = "id") @ApiParam(value = "工作计划与总结id", required = true) Integer id,
+                                       @RequestParam(required = false) @ApiParam(value = "用户名", required = false) String username) {
+        username = checkAndGetUnam(username);
+        userService.deletePlanAndSummary(id, username);
+        return ResponseResult.success();
     }
 
     //---------------------------------个人文档相关---------------------------------
@@ -138,23 +169,28 @@ public class UserController {
 
     @ApiOperation("上传文件")
     @PostMapping("/uploadFiles")
-    public ResponseResult uploadFiles(@RequestParam(required = true) @ApiParam(value = "文件", required = true) MultipartFile files[],
+    public ResponseResult uploadFiles(@ApiParam(value = "文件", required = true) MultipartFile file,
                                       @RequestParam(required = true) @ApiParam(value = "文件类型", required = true) String doctype,
                                       @RequestParam(required = true) @ApiParam(value = "提交者", required = false) String username) throws IOException {
-        if (username == null) {
-            ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-            HttpServletRequest request = sra.getRequest();
-            TokenUser tokenUser = (TokenUser) request.getAttribute(JwtUtil.USER);
-            username = tokenUser.getUnam();
+        if (file == null){
+            return ResponseResult.failure(Status.PARAM_NULL);
         }
+        MultipartFile[] files = new MultipartFile[1];
+        files[0] = file;
+        username = checkAndGetUnam(username);
         List<Integer> ids = userService.uploadFiles(files, doctype,username);
         return ResponseResult.success(ids);
     }
 
     @ApiOperation(("上传图片"))
-    @PostMapping("/uploadImages")
-    public ResponseResult uploadImages(@RequestParam(required = true) @ApiParam(value = "图片", required = true) MultipartFile image[]) throws IOException {
-        List<String> urls = userService.uploadImages(image);
+    @PostMapping(value = "/uploadImages",consumes = "multipart/*",headers = "content-type=multipart/form-date")
+    public ResponseResult uploadImages(@ApiParam(value = "图片", required = true) MultipartFile image) throws IOException {
+        if (image == null ){
+            return ResponseResult.failure(Status.PARAM_NULL);
+        }
+        MultipartFile[] images = new MultipartFile[1];
+        images[0] = image;
+        List<String> urls = userService.uploadImages(images);
         return ResponseResult.success(urls);
     }
 
@@ -240,28 +276,25 @@ public class UserController {
     @ApiOperation("获取用户的所有文件")
     @GetMapping("/getUserDocs")
     public ResponseResult getUserDocs(@RequestParam @ApiParam(value = "用户名", required = false) String username) {
-        if (username == null) {
-            ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-            HttpServletRequest request = sra.getRequest();
-            TokenUser tokenUser = (TokenUser) request.getAttribute(JwtUtil.USER);
-            username = tokenUser.getUnam();
-        }
+        username = checkAndGetUnam(username);
         List<DocumentFile> bps = userService.getUserDoc(username);
         return ResponseResult.success(bps);
     }
 
     @ApiOperation("获取用户所有的项目")
     @GetMapping("/getUserProjects")
-    public ResponseResult getUserProjects(@RequestParam @ApiParam(value = "用户名", required = false) String username){
-        if (username == null) {
-            ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-            HttpServletRequest request = sra.getRequest();
-            TokenUser tokenUser = (TokenUser) request.getAttribute(JwtUtil.USER);
-            username = tokenUser.getUnam();
-        }
+    public ResponseResult getUserProjects(@RequestParam @ApiParam(value = "用户真实姓名!!!!", required = true) String username){
         List<BaseProject> bps = userService.getUserProjects(username);
-        return ResponseResult.success();
+        return ResponseResult.success(bps);
     }
+
+    @ApiOperation("获取项目详情")
+    @GetMapping("/getUserProjects/{pid}")
+    public ResponseResult getUserProjectDetail(@PathVariable @ApiParam(value = "项目id",required = true) Integer pid){
+        Project project = userService.getProjectDetail(pid);
+        return ResponseResult.success(project);
+    }
+
 
     @ApiOperation("获取项目的各种所有文件 若doctype=null 则返回所有")
     @GetMapping("/getProjectDocs")

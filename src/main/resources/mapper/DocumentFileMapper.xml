@@ -6,12 +6,12 @@
     <result column="fname" jdbcType="VARCHAR" property="fname" />
     <result column="time" jdbcType="TIMESTAMP" property="time" />
     <result column="fpath" jdbcType="VARCHAR" property="fpath" />
-    <result column="pid" property="pid"/>
+    <result column="p_id" property="pid"/>
     <result column="doctype" property="doctype"/>
     <result column="d_unam" property="dUnam"></result>
   </resultMap>
   <sql id="Base_Column_List">
-    fid, fname, `time`, fpath,pid,doctype,d_unam
+    fid, fname, `time`, fpath,p_id,doctype,d_unam
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -114,7 +114,7 @@
   <select id="getProjectDocs" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"></include>
-    from document_file where pid = #{pid}
+    from document_file where p_id = #{pid}
     <if test="doctype !=null">
       and doctype = #{doctype};
     </if>
