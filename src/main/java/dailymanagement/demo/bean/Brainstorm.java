@@ -20,4 +20,13 @@ public class Brainstorm {
     public void setTitle(String title) {
         this.title = title == null ? null : title.trim();
     }
+
+    public Brainstorm(String title) {
+        this.title = title;
+    }
+
+    public Brainstorm(Integer tid, String title) {
+        this.tid = tid;
+        this.title = title;
+    }
 }

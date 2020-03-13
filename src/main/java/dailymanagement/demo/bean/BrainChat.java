@@ -40,4 +40,17 @@ public class BrainChat {
     public void setFrom(Integer from) {
         this.from = from;
     }
+
+    public BrainChat(Integer brainid, String comment, Integer from) {
+        this.brainid = brainid;
+        this.comment = comment;
+        this.from = from;
+    }
+
+    public BrainChat(Integer cid, Integer brainid, String comment, Integer from) {
+        this.cid = cid;
+        this.brainid = brainid;
+        this.comment = comment;
+        this.from = from;
+    }
 }

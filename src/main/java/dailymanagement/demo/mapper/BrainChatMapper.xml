@@ -1,78 +1,85 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="dailymanagement.demo.dao.BrainChatMapper" >
-  <resultMap id="BaseResultMap" type="dailymanagement.demo.bean.BrainChat" >
-    <id column="cid" property="cid" jdbcType="INTEGER" />
-    <result column="brainid" property="brainid" jdbcType="INTEGER" />
-    <result column="comment" property="comment" jdbcType="VARCHAR" />
-    <result column="from" property="from" jdbcType="INTEGER" />
-  </resultMap>
-  <sql id="Base_Column_List" >
+<mapper namespace="dailymanagement.demo.dao.BrainChatMapper">
+    <resultMap id="BaseResultMap" type="dailymanagement.demo.bean.BrainChat">
+        <id column="cid" property="cid" jdbcType="INTEGER"/>
+        <result column="brainid" property="brainid" jdbcType="INTEGER"/>
+        <result column="comment" property="comment" jdbcType="VARCHAR"/>
+        <result column="from" property="from" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="Base_Column_List">
     cid, brainid, comment, from
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from brain_chat
+        where cid = #{cid,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectBybrainid" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select *
     from brain_chat
-    where cid = #{cid,jdbcType=INTEGER}
+    where  brainid= #{brainid,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from brain_chat
     where cid = #{cid,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="dailymanagement.demo.bean.BrainChat" >
-    insert into brain_chat (cid, brainid, comment, 
-      from)
+    <insert id="insert" parameterType="dailymanagement.demo.bean.BrainChat">
+    insert into brain_chat (cid, brainid, comment,`from`)
     values (#{cid,jdbcType=INTEGER}, #{brainid,jdbcType=INTEGER}, #{comment,jdbcType=VARCHAR}, 
       #{from,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="dailymanagement.demo.bean.BrainChat" >
-    insert into brain_chat
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="cid != null" >
-        cid,
-      </if>
-      <if test="brainid != null" >
-        brainid,
-      </if>
-      <if test="comment != null" >
-        comment,
-      </if>
-      <if test="from != null" >
-        from,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="cid != null" >
-        #{cid,jdbcType=INTEGER},
-      </if>
-      <if test="brainid != null" >
-        #{brainid,jdbcType=INTEGER},
-      </if>
-      <if test="comment != null" >
-        #{comment,jdbcType=VARCHAR},
-      </if>
-      <if test="from != null" >
-        #{from,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="dailymanagement.demo.bean.BrainChat" >
-    update brain_chat
-    <set >
-      <if test="brainid != null" >
-        brainid = #{brainid,jdbcType=INTEGER},
-      </if>
-      <if test="comment != null" >
-        comment = #{comment,jdbcType=VARCHAR},
-      </if>
-      <if test="from != null" >
-        from = #{from,jdbcType=INTEGER},
-      </if>
-    </set>
-    where cid = #{cid,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="dailymanagement.demo.bean.BrainChat" >
+    <insert id="insertSelective" parameterType="dailymanagement.demo.bean.BrainChat">
+        insert into brain_chat
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cid != null">
+                cid,
+            </if>
+            <if test="brainid != null">
+                brainid,
+            </if>
+            <if test="comment != null">
+                comment,
+            </if>
+            <if test="from != null">
+                from,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cid != null">
+                #{cid,jdbcType=INTEGER},
+            </if>
+            <if test="brainid != null">
+                #{brainid,jdbcType=INTEGER},
+            </if>
+            <if test="comment != null">
+                #{comment,jdbcType=VARCHAR},
+            </if>
+            <if test="from != null">
+                #{from,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="dailymanagement.demo.bean.BrainChat">
+        update brain_chat
+        <set>
+            <if test="brainid != null">
+                brainid = #{brainid,jdbcType=INTEGER},
+            </if>
+            <if test="comment != null">
+                comment = #{comment,jdbcType=VARCHAR},
+            </if>
+            <if test="from != null">
+                from = #{from,jdbcType=INTEGER},
+            </if>
+        </set>
+        where cid = #{cid,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="dailymanagement.demo.bean.BrainChat">
     update brain_chat
     set brainid = #{brainid,jdbcType=INTEGER},
       comment = #{comment,jdbcType=VARCHAR},

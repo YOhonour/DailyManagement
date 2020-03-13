@@ -18,6 +18,29 @@
     from blog
     where bid = #{bid,jdbcType=INTEGER}
   </select>
+
+
+  <select id="getAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from  blog
+  </select>
+
+  <select id="getallbytypeid" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from  blog
+    where  type =#{typeid}
+  </select>
+
+  <select id="getallblogbyuserid" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from  blog
+    where  authorid =#{userId,jdbcType=INTEGER}
+  </select>
+
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from blog
     where bid = #{bid,jdbcType=INTEGER}
@@ -101,6 +124,18 @@
       filepath = #{filepath,jdbcType=VARCHAR},
       authorid = #{authorid,jdbcType=INTEGER},
       likenum = #{likenum,jdbcType=INTEGER}
+    where bid = #{bid,jdbcType=INTEGER}
+  </update>
+
+  <update id="like" parameterType="dailymanagement.demo.bean.Blog" >
+    update blog
+    set likenum = likenum+1
+    where bid = #{bid,jdbcType=INTEGER}
+  </update>
+
+  <update id="cancelLike" parameterType="dailymanagement.demo.bean.Blog" >
+    update blog
+    set likenum = likenum-1
     where bid = #{bid,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -108,4 +108,5 @@
       status = #{status,jdbcType=CHAR}
     where bid = #{bid,jdbcType=INTEGER}
   </update>
+
 </mapper>

@@ -1,7 +1,9 @@
 package dailymanagement.demo.dao;
 
 import dailymanagement.demo.bean.UserinfoCollection;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface UserinfoCollectionMapper {
     int deleteByPrimaryKey(Integer ucid);
 
@@ -14,4 +16,6 @@ public interface UserinfoCollectionMapper {
     int updateByPrimaryKeySelective(UserinfoCollection record);
 
     int updateByPrimaryKey(UserinfoCollection record);
+
+    int deleteByuseridAndBlogid(int userId, int blogId);
 }

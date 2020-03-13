@@ -30,4 +30,9 @@ public class UserinfoCollection {
     public void setBlogid(Integer blogid) {
         this.blogid = blogid;
     }
+
+    public UserinfoCollection(Integer userid, Integer blogid) {
+        this.userid = userid;
+        this.blogid = blogid;
+    }
 }

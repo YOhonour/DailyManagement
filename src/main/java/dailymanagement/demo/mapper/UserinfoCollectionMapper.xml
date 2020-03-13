@@ -19,6 +19,14 @@
     delete from userinfo_collection
     where ucid = #{ucid,jdbcType=INTEGER}
   </delete>
+
+  <delete id="deleteByuseridAndBlogid" parameterType="java.lang.Integer" >
+    delete from userinfo_collection
+    where userid = #{userId,jdbcType=INTEGER}
+    and  blogid= #{blogId,jdbcType=INTEGER}
+  </delete>
+
+
   <insert id="insert" parameterType="dailymanagement.demo.bean.UserinfoCollection" >
     insert into userinfo_collection (ucid, userid, blogid
       )

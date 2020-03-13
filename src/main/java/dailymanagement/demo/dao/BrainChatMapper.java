@@ -1,7 +1,10 @@
 package dailymanagement.demo.dao;
 
 import dailymanagement.demo.bean.BrainChat;
+import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+@Mapper
 public interface BrainChatMapper {
     int deleteByPrimaryKey(Integer cid);
 
@@ -14,4 +17,6 @@ public interface BrainChatMapper {
     int updateByPrimaryKeySelective(BrainChat record);
 
     int updateByPrimaryKey(BrainChat record);
+
+    List<BrainChat> selectBybrainid(int brainid);
 }
