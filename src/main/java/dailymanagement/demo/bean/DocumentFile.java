@@ -28,6 +28,7 @@ public class DocumentFile {
 
     @ApiModelProperty(value = "提交人姓名",required = false)
     private String dUnam;
+    private String ftype;
 
     public Integer getFid() {
         return fid;
@@ -83,5 +84,22 @@ public class DocumentFile {
 
     public void setdUnam(String dUnam) {
         this.dUnam = dUnam;
+    public String getFtype() {
+        return ftype;
+    }
+
+    public void setFtype(String ftype) {
+        this.ftype = ftype;
+    }
+
+    @Override
+    public String toString() {
+        return "DocumentFile{" +
+                "fid=" + fid +
+                ", fname='" + fname + '\'' +
+                ", time=" + time +
+                ", fpath='" + fpath + '\'' +
+                ", ftype='" + ftype + '\'' +
+                '}';
     }
 }

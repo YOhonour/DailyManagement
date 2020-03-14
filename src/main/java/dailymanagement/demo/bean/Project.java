@@ -4,11 +4,23 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import javafx.scene.chart.ValueAxis;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;
 
 @ApiModel(description = "项目信息表")
+/**
+ * 项目表
+ * pid：项目ID
+ * pname：项目名
+ * pRealname：牵头人
+ * beginTime：创建时间
+ * closeTime：结项时间
+ * introduction：项目简介
+ *
+ */
+@Component
 public class Project {
 
     private Integer pid;
@@ -36,6 +48,7 @@ public class Project {
 
     @ApiModelProperty(value = "项目进度",required = false)
     private Integer progress;
+    private List<Game> game;
 
     public Integer getPid() {
         return pid;
@@ -110,6 +123,14 @@ public class Project {
     }
 
 
+    public List<Game> getGame() {
+        return game;
+    }
+
+    public void setGame(List<Game> game) {
+        this.game = game;
+    }
+
     @Override
     public String toString() {
         return "Project{" +
@@ -122,6 +143,7 @@ public class Project {
                 ", members=" + members +
                 ", image='" + image + '\'' +
                 ", progress=" + progress +
+                ", game=" + game +
                 '}';
     }
 }

@@ -27,7 +27,7 @@
     select 
     <include refid="Base_Column_List" />
     from userinfo
-    where unam = #{unam,jdbcType=VARCHAR}
+    where uid = #{uid,jdbcType=INTEGER}
   </select>
   <select id="login" parameterType="dailymanagement.demo.bean.Userinfo" resultMap="BaseResultMap">
     select
@@ -37,7 +37,7 @@
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from userinfo
-    where unam = #{unam,jdbcType=VARCHAR}
+    where uid = #{uid,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="dailymanagement.demo.bean.Userinfo">
     insert into userinfo (unam, realname, sex, 
@@ -46,7 +46,7 @@
       skills, title, phone, 
       qq, weibo, mail, password
       )
-    values (#{unam,jdbcType=VARCHAR}, #{realname,jdbcType=VARCHAR}, #{sex,jdbcType=CHAR}, 
+    values (#{uid,jdbcType=INTEGER}, #{unam,jdbcType=VARCHAR}, #{realname,jdbcType=VARCHAR}, #{sex,jdbcType=CHAR},
       #{upath,jdbcType=VARCHAR}, #{school,jdbcType=VARCHAR}, #{major,jdbcType=VARCHAR}, 
       #{birthday,jdbcType=TIMESTAMP}, #{jointime,jdbcType=TIMESTAMP}, #{prjHistory,jdbcType=VARCHAR}, 
       #{skills,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{phone,jdbcType=CHAR}, 
@@ -202,14 +202,15 @@
         mail = #{mail,jdbcType=CHAR}
       </if>
     </set>
-    where unam = #{unam,jdbcType=VARCHAR}
+    where uid = #{uid,jdbcType=INTEGER}
   </update>
   <update id="updatePassword">
     update userinfo set password = #{password} where unam = #{username}
   </update>
   <update id="updateByPrimaryKey" parameterType="dailymanagement.demo.bean.Userinfo">
     update userinfo
-    set realname = #{realname,jdbcType=VARCHAR},
+    set unam = #{unam,jdbcType=INTEGER},
+      realname = #{realname,jdbcType=VARCHAR},
       sex = #{sex,jdbcType=CHAR},
       upath = #{upath,jdbcType=VARCHAR},
       school = #{school,jdbcType=VARCHAR},
@@ -224,7 +225,7 @@
       weibo = #{weibo,jdbcType=CHAR},
       mail = #{mail,jdbcType=CHAR},
       password = #{password,jdbcType=VARCHAR}
-    where unam = #{unam,jdbcType=VARCHAR}
+    where uid = #{uid,jdbcType=INTEGER}
   </update>
 
   <insert id="savefile" parameterType="dailymanagement.demo.bean.DocumentFile" keyColumn="fid" keyProperty="fid" useGeneratedKeys="true">

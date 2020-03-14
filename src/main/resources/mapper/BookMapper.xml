@@ -1,15 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="dailymanagement.demo.mapper.BookMapper">
-  <resultMap id="BaseResultMap" type="dailymanagement.demo.bean.Book">
-    <id column="bid" jdbcType="INTEGER" property="bid" />
-    <result column="bname" jdbcType="VARCHAR" property="bname" />
-    <result column="edition" jdbcType="VARCHAR" property="edition" />
-    <result column="introduction" jdbcType="VARCHAR" property="introduction" />
-    <result column="status" jdbcType="CHAR" property="status" />
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dailymanagement.demo.dao.BookMapper" >
+  <resultMap id="BaseResultMap" type="dailymanagement.demo.bean.Book" >
+    <id column="bid" property="bid" jdbcType="INTEGER" />
+    <result column="bname" property="bname" jdbcType="VARCHAR" />
+    <result column="introduction" property="introduction" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="ipath" property="ipath" jdbcType="VARCHAR" />
+    <result column="btype"  property="btype"  jdbcType="VARCHAR" />
   </resultMap>
-  <sql id="Base_Column_List">
-    bid, bname, edition, introduction, status
+  <sql id="Base_Column_List" >
+    bid, bname, introduction, status, ipath, btype
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -17,15 +18,30 @@
     from book
     where bid = #{bid,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+    <include refid="Base_Column_List" />
+    from book
+    <where>
+      <if test="_parameter!=null">
+        bname like '%${_parameter}%'
+      </if>
+    </where>
+  </select>
+  <select id="getAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from book
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from book
     where bid = #{bid,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="dailymanagement.demo.bean.Book">
-    insert into book (bid, bname, edition, 
-      introduction, status)
-    values (#{bid,jdbcType=INTEGER}, #{bname,jdbcType=VARCHAR}, #{edition,jdbcType=VARCHAR}, 
-      #{introduction,jdbcType=VARCHAR}, #{status,jdbcType=CHAR})
+  <insert id="insert" parameterType="dailymanagement.demo.bean.Book" >
+    insert into book (bid, bname,
+      introduction, status, btype)
+    values (#{bid,jdbcType=INTEGER}, #{bname,jdbcType=VARCHAR}, #{introduction,jdbcType=VARCHAR},
+    #{status,jdbcType=CHAR}, #{btype,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="dailymanagement.demo.bean.Book">
     insert into book
@@ -36,14 +52,17 @@
       <if test="bname != null">
         bname,
       </if>
-      <if test="edition != null">
-        edition,
-      </if>
-      <if test="introduction != null">
+      <if test="introduction != null" >
         introduction,
       </if>
       <if test="status != null">
         status,
+      </if>
+      <if test="ipath != null" >
+        ipath,
+      </if>
+      <if test="btype != null">
+        btype
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -53,14 +72,17 @@
       <if test="bname != null">
         #{bname,jdbcType=VARCHAR},
       </if>
-      <if test="edition != null">
-        #{edition,jdbcType=VARCHAR},
-      </if>
-      <if test="introduction != null">
+      <if test="introduction != null" >
         #{introduction,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
         #{status,jdbcType=CHAR},
+      </if>
+      <if test="ipath != null" >
+        #{ipath,jdbcType=VARCHAR},
+      </if>
+      <if test="btype != null">
+        #{btype,jdbcType=VARCHAR}
       </if>
     </trim>
   </insert>
@@ -70,10 +92,7 @@
       <if test="bname != null">
         bname = #{bname,jdbcType=VARCHAR},
       </if>
-      <if test="edition != null">
-        edition = #{edition,jdbcType=VARCHAR},
-      </if>
-      <if test="introduction != null">
+      <if test="introduction != null" >
         introduction = #{introduction,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
@@ -85,9 +104,9 @@
   <update id="updateByPrimaryKey" parameterType="dailymanagement.demo.bean.Book">
     update book
     set bname = #{bname,jdbcType=VARCHAR},
-      edition = #{edition,jdbcType=VARCHAR},
       introduction = #{introduction,jdbcType=VARCHAR},
       status = #{status,jdbcType=CHAR}
     where bid = #{bid,jdbcType=INTEGER}
   </update>
+
 </mapper>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dailymanagement.demo.dao.UserinfoCollectionMapper" >
+  <resultMap id="BaseResultMap" type="dailymanagement.demo.bean.UserinfoCollection" >
+    <id column="ucid" property="ucid" jdbcType="INTEGER" />
+    <result column="userid" property="userid" jdbcType="INTEGER" />
+    <result column="blogid" property="blogid" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ucid, userid, blogid
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from userinfo_collection
+    where ucid = #{ucid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from userinfo_collection
+    where ucid = #{ucid,jdbcType=INTEGER}
+  </delete>
+
+  <delete id="deleteByuseridAndBlogid" parameterType="java.lang.Integer" >
+    delete from userinfo_collection
+    where userid = #{userId,jdbcType=INTEGER}
+    and  blogid= #{blogId,jdbcType=INTEGER}
+  </delete>
+
+
+  <insert id="insert" parameterType="dailymanagement.demo.bean.UserinfoCollection" >
+    insert into userinfo_collection (ucid, userid, blogid
+      )
+    values (#{ucid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{blogid,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="dailymanagement.demo.bean.UserinfoCollection" >
+    insert into userinfo_collection
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="ucid != null" >
+        ucid,
+      </if>
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="blogid != null" >
+        blogid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="ucid != null" >
+        #{ucid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="blogid != null" >
+        #{blogid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="dailymanagement.demo.bean.UserinfoCollection" >
+    update userinfo_collection
+    <set >
+      <if test="userid != null" >
+        userid = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="blogid != null" >
+        blogid = #{blogid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ucid = #{ucid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="dailymanagement.demo.bean.UserinfoCollection" >
+    update userinfo_collection
+    set userid = #{userid,jdbcType=INTEGER},
+      blogid = #{blogid,jdbcType=INTEGER}
+    where ucid = #{ucid,jdbcType=INTEGER}
+  </update>
+</mapper>

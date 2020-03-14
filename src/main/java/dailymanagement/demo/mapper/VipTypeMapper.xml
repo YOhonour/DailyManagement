@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dailymanagement.demo.dao.VipTypeMapper" >
+  <resultMap id="BaseResultMap" type="dailymanagement.demo.bean.VipType" >
+    <id column="vtid" property="vtid" jdbcType="INTEGER" />
+    <result column="vtname" property="vtname" jdbcType="VARCHAR" />
+    <result column="vtpath" property="vtpath" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    vtid, vtname, vtpath
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from vip_type
+    where vtid = #{vtid,jdbcType=INTEGER}
+  </select>
+  <select id="getAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from vip_type
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from vip_type
+    where vtid = #{vtid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="dailymanagement.demo.bean.VipType" >
+    insert into vip_type (vtid, vtname, vtpath
+      )
+    values (#{vtid,jdbcType=INTEGER}, #{vtname,jdbcType=VARCHAR}, #{vtpath,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="dailymanagement.demo.bean.VipType" >
+    insert into vip_type
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="vtid != null" >
+        vtid,
+      </if>
+      <if test="vtname != null" >
+        vtname,
+      </if>
+      <if test="vtpath != null" >
+        vtpath,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="vtid != null" >
+        #{vtid,jdbcType=INTEGER},
+      </if>
+      <if test="vtname != null" >
+        #{vtname,jdbcType=VARCHAR},
+      </if>
+      <if test="vtpath != null" >
+        #{vtpath,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="dailymanagement.demo.bean.VipType" >
+    update vip_type
+    <set >
+      <if test="vtname != null" >
+        vtname = #{vtname,jdbcType=VARCHAR},
+      </if>
+      <if test="vtpath != null" >
+        vtpath = #{vtpath,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where vtid = #{vtid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="dailymanagement.demo.bean.VipType" >
+    update vip_type
+    set vtname = #{vtname,jdbcType=VARCHAR},
+      vtpath = #{vtpath,jdbcType=VARCHAR}
+    where vtid = #{vtid,jdbcType=INTEGER}
+  </update>
+</mapper>

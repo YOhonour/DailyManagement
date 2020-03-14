@@ -1,15 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="dailymanagement.demo.mapper.VipMapper">
-  <resultMap id="BaseResultMap" type="dailymanagement.demo.bean.Vip">
-    <id column="vid" jdbcType="INTEGER" property="vid" />
-    <result column="vnam" jdbcType="VARCHAR" property="vnam" />
-    <result column="vaccount" jdbcType="VARCHAR" property="vaccount" />
-    <result column="vpassword" jdbcType="VARCHAR" property="vpassword" />
-    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dailymanagement.demo.dao.VipMapper" >
+  <resultMap id="BaseResultMap" type="dailymanagement.demo.bean.Vip" >
+    <id column="vid" property="vid" jdbcType="INTEGER" />
+    <result column="vnam" property="vnam" jdbcType="VARCHAR" />
+    <result column="vaccount" property="vaccount" jdbcType="VARCHAR" />
+    <result column="vpassword" property="vpassword" jdbcType="VARCHAR" />
+    <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="typeid" property="typeid" jdbcType="INTEGER" />
   </resultMap>
-  <sql id="Base_Column_List">
-    vid, vnam, vaccount, vpassword, end_time
+  <sql id="Base_Column_List" >
+    vid, vnam, vaccount, vpassword, end_time, typeid
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -17,17 +18,32 @@
     from vip
     where vid = #{vid,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+    <include refid="Base_Column_List" />
+    from vip
+    <where>
+      <if test="_parameter!=null">
+        vnam like '%${_parameter}%'
+      </if>
+    </where>
+  </select>
+  <select id="getAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from vip
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from vip
     where vid = #{vid,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="dailymanagement.demo.bean.Vip">
     insert into vip (vid, vnam, vaccount, 
-      vpassword, end_time)
+      vpassword, end_time, typeid)
     values (#{vid,jdbcType=INTEGER}, #{vnam,jdbcType=VARCHAR}, #{vaccount,jdbcType=VARCHAR}, 
-      #{vpassword,jdbcType=VARCHAR}, #{endTime,jdbcType=TIMESTAMP})
+      #{vpassword,jdbcType=VARCHAR}, #{endTime,jdbcType=TIMESTAMP}, #{typeid,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="dailymanagement.demo.bean.Vip">
+  <insert id="insertSelective" parameterType="dailymanagement.demo.bean.Vip" useGeneratedKeys="true" keyProperty="vid">
     insert into vip
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="vid != null">
@@ -45,6 +61,9 @@
       <if test="endTime != null">
         end_time,
       </if>
+      <if test="typeid != null">
+        typeid,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="vid != null">
@@ -61,6 +80,9 @@
       </if>
       <if test="endTime != null">
         #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="typeid != null">
+        #{typeid, jdbcType=INTEGER}
       </if>
     </trim>
   </insert>
