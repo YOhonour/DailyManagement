@@ -1,22 +1,34 @@
 package dailymanagement.demo.bean;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.Date;
 
+@ApiModel(description = "项目文件")
 public class DocumentFile {
 
+    @ApiModelProperty(value = "项目文件id")
     private Integer fid;
 
+    @ApiModelProperty(value = "文件名",required = false)
     private String fname;
 
+    @ApiModelProperty(value = "上传时间",required = false)
     private Date time;
 
+    @ApiModelProperty(value = "文件保存路径",required = false)
     private String fpath;
 
+    @ApiModelProperty(value = "项目id",required = false)
     private Integer pid;
 
+    @ApiModelProperty(value = "项目类型",required = true)
     private String doctype;
 
+    @ApiModelProperty(value = "提交人姓名",required = false)
     private String dUnam;
+
     public Integer getFid() {
         return fid;
     }

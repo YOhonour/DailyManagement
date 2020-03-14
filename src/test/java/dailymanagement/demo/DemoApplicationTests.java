@@ -59,10 +59,10 @@ class DemoApplicationTests {
 //        project.setPid(29);
 //        userController.updateProject(project);
 
-        Userinfo userinfo = new Userinfo();
-        userinfo.setUnam("lusi");
-        userinfo.setSkills("九阴白骨爪");
-        userController.updateUser(userinfo);
+//        Userinfo userinfo = new Userinfo();
+//        userinfo.setUnam("lusi");
+//        userinfo.setSkills("九阴白骨爪");
+//        userController.updateUser(userinfo);
     }
 
     @Test

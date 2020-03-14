@@ -78,6 +78,15 @@ public class ResponseResult<T> implements Serializable {
         return result;
     }
 
+    public static ResponseResult failure(String message){
+        ResponseResult result = new ResponseResult();
+        result.code = 500;
+        result.message = message;
+        result.data = null;
+        return result;
+    }
+
+
     @Override
     public String toString() {
         return "ResponseResult{" +

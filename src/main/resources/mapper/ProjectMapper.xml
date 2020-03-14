@@ -84,6 +84,9 @@
       <if test="image != null">
         #{image},
       </if>
+      <if test="progress != null">
+        progress,
+      </if>
     </trim>
   </insert>
 

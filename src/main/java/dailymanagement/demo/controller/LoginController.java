@@ -7,6 +7,7 @@ import dailymanagement.demo.service.UserService;
 import dailymanagement.demo.utils.JwtUtil;
 import dailymanagement.demo.utils.ResponseResult;
 import dailymanagement.demo.utils.Status;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.catalina.User;
@@ -31,6 +32,7 @@ import java.util.HashMap;
  * @date 2020/2/8 11:34
  */
 @RestController
+@Api(tags = "登陆相关")
 public class LoginController {
 
     private final Logger logger = LoggerFactory.getLogger(LoginController.class);
@@ -84,4 +86,5 @@ public class LoginController {
         logger.info(unam+"退出成功");
         return ResponseResult.success(unam);
     }*/
+
 }

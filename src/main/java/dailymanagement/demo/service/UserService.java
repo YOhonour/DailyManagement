@@ -5,7 +5,6 @@ import dailymanagement.demo.bean.resultbean.BaseProject;
 import dailymanagement.demo.bean.resultbean.PandS;
 import dailymanagement.demo.bean.vo.PlatFormUser;
 import dailymanagement.demo.bean.vo.ProjectDoc;
-import dailymanagement.demo.exception.MyException;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.print.Doc;
@@ -37,7 +36,7 @@ public interface UserService {
      * 修改用户信息 除开密码
      * @param user
      */
-    void updateUser(Userinfo user) throws MyException;
+    void updateUser(Userinfo user);
 
     /**
      * 添加或更新工作计划与总结
@@ -78,7 +77,7 @@ public interface UserService {
      * @param newpw
      * @param username
      */
-    void updatePassword(String username,String oldpw,String newpw) throws MyException;
+    void updatePassword(String username,String oldpw,String newpw);
 
     /**
      * 上传图片
@@ -157,4 +156,17 @@ public interface UserService {
      * @return
      */
     Project getProjectDetail(Integer pid);
+
+    /**
+     * 保存文件
+     * @param files
+     * @return
+     */
+    List<Integer> saveFile(MultipartFile[] files) throws IOException;
+
+    /**
+     * 填写documentfile的详细信息
+     * @param documentFile
+     */
+    void updateProjectDoc(DocumentFile documentFile);
 }

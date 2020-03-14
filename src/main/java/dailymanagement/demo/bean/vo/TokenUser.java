@@ -8,6 +8,7 @@ package dailymanagement.demo.bean.vo;
  */
 
 public class TokenUser {
+
     private String unam;
     private String realname;
 

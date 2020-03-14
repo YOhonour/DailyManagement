@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(Userinfo user) throws MyException {
+    public void updateUser(Userinfo user) {
         Userinfo userinfo = userinfoMapper.selectByPrimaryKey(user.getUnam());
         if (userinfo == null) {
 //            userinfoMapper.insertSelective(user);
@@ -113,7 +113,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updatePassword(String username, String oldpw, String newpw) throws MyException {
+    public void updatePassword(String username, String oldpw, String newpw) {
         Userinfo userinfo = userinfoMapper.login(username, oldpw);
         if (userinfo == null) {
             throw new MyException(Status.FAULT_PASSWORD);
@@ -206,6 +206,48 @@ public class UserServiceImpl implements UserService {
     @Override
     public Project getProjectDetail(Integer pid) {
         return projectMapper.selectByPrimaryKey(pid);
+    }
+
+    /**
+     * 保存一批文件
+     * @param files
+     * @return
+     * @throws IOException
+     */
+    @Override
+    public List<Integer> saveFile(MultipartFile[] files) throws IOException {
+        int length = files.length;
+        ArrayList<Integer> list = new ArrayList<>();
+        for (int i = 0; i < length; i++) {
+            Integer integer = saveFile(files[i]);
+            list.add(i);
+        }
+        return list;
+    }
+
+    @Override
+    public void updateProjectDoc(DocumentFile documentFile) {
+        documentFile.setFpath(null);
+        documentFileMapper.updateByPrimaryKeySelective(documentFile);
+    }
+
+    private Integer saveFile(MultipartFile file) throws IOException {
+        String fname = file.getOriginalFilename();
+        Date time = new Date();
+        //构建图片的保存地址
+        String fpath = base_file_location + time.getTime() + '_' + fname;
+        System.out.println(fpath);
+        //保存文件
+        file.transferTo(new File(fpath));
+        //保存到数据库
+        DocumentFile docfile = new DocumentFile();
+        docfile.setFpath(fpath);
+        docfile.setFname(fname);
+        docfile.setTime(time);
+        documentFileMapper.insertSelective(docfile);
+        //访问地址
+        Integer fid = docfile.getFid();
+        return fid;
     }
 
     private Integer saveFile(MultipartFile file, String doctype,String uname) throws IOException {
