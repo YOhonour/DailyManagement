@@ -9,38 +9,40 @@
     <result column="close_time" jdbcType="TIMESTAMP" property="closeTime" />
     <result column="introduction" jdbcType="VARCHAR" property="introduction" />
     <result column="image" jdbcType="VARCHAR" property="image" />
-    <collection property="members" javaType="ArrayList" ofType="java.lang.String" select="getProjectMember" column="pid" >
+    <result column="progress" property="progress" />
+    <collection property="members" javaType="ArrayList" ofType="java.lang.String" select="getProjectMember" column="pid">
       <result column="member" property="members"></result>
     </collection>
   </resultMap>
   
   <sql id="Base_Column_List">
-    pid, pname, p_realname, begin_time, close_time, introduction,image
+    pid, pname, p_realname, begin_time, close_time, introduction,image,progress
   </sql>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from project
     where pid = #{pid,jdbcType=INTEGER}
   </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from project
     where pid = #{pid,jdbcType=INTEGER}
   </delete>
+
   <insert id="insert" parameterType="dailymanagement.demo.bean.Project">
-    insert into project (pid, pname, p_realname, 
-      begin_time, close_time, introduction,image
+    insert into project (pname, p_realname,
+      begin_time, close_time, introduction,image,progress
       )
-    values (#{pid,jdbcType=INTEGER}, #{pname,jdbcType=VARCHAR}, #{pRealname,jdbcType=VARCHAR}, 
-      #{beginTime,jdbcType=TIMESTAMP}, #{closeTime,jdbcType=TIMESTAMP}, #{introduction,jdbcType=VARCHAR},#{image}
+    values ( #{pname,jdbcType=VARCHAR}, #{pRealname,jdbcType=VARCHAR},
+      #{beginTime,jdbcType=TIMESTAMP}, #{closeTime,jdbcType=TIMESTAMP}, #{introduction,jdbcType=VARCHAR},#{image},#{progress}
       )
   </insert>
+
   <insert id="insertSelective" parameterType="dailymanagement.demo.bean.Project" keyColumn="pid" keyProperty="pid" useGeneratedKeys="true">
     insert into project
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="pid != null">
-        pid,
-      </if>
       <if test="pname != null">
         pname,
       </if>
@@ -59,11 +61,11 @@
       <if test="image != null">
         image,
       </if>
+      <if test="progress != null">
+        progress,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="pid != null">
-        #{pid,jdbcType=INTEGER},
-      </if>
       <if test="pname != null">
         #{pname,jdbcType=VARCHAR},
       </if>
@@ -82,8 +84,12 @@
       <if test="image != null">
         #{image},
       </if>
+      <if test="progress != null">
+        progress,
+      </if>
     </trim>
   </insert>
+
   <update id="updateByPrimaryKeySelective" parameterType="dailymanagement.demo.bean.Project">
     update project
     <set>
@@ -103,11 +109,15 @@
         introduction = #{introduction,jdbcType=VARCHAR},
       </if>
       <if test="image != null">
-        iamge = #{image},
+        image = #{image},
+      </if>
+      <if test="progress != null">
+        progress = #{progress},
       </if>
     </set>
     where pid = #{pid,jdbcType=INTEGER}
   </update>
+
   <update id="updateByPrimaryKey" parameterType="dailymanagement.demo.bean.Project">
     update project
     set pname = #{pname,jdbcType=VARCHAR},
@@ -116,6 +126,7 @@
       close_time = #{closeTime,jdbcType=TIMESTAMP},
       introduction = #{introduction,jdbcType=VARCHAR},
       image = #{image}
+      progress = #{progress}
     where pid = #{pid,jdbcType=INTEGER}
   </update>
   <insert id="insertMembers" parameterType="dailymanagement.demo.bean.Project">
@@ -124,16 +135,24 @@
       (#{pid},#{member})
     </foreach>
   </insert>
+
   <update id="updateProjectDoc" parameterType="dailymanagement.demo.bean.vo.ProjectDoc">
     update document_file set p_id = #{pid} where fid =#{fid};
   </update>
+
   <select id="getUserProjects" parameterType="java.lang.String" resultType="dailymanagement.demo.bean.resultbean.BaseProject">
     select pid,pname,image
     from project
     where p_realname = #{username}
     or pid in (select pid from project_member where member = #{username});
   </select>
-  <select id="getProjectMember" parameterType="java.lang.Integer">
-    select member from project_member where pid=#{pid};
+
+  <select id="getProjectMember" parameterType="java.lang.Integer" resultType="java.lang.String">
+    select member from project_member where pid= #{pid};
   </select>
+
+  <delete id="deleteMembers" parameterType="dailymanagement.demo.bean.Project">
+        delete from project_member where pid = #{pid};
+  </delete>
+
 </mapper>

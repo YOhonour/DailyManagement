@@ -10,6 +10,8 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+import java.sql.SQLException;
 import java.util.Arrays;
 
 /**
@@ -49,7 +51,6 @@ public class ExceptionAspect {
             logger.info("执行成功");
             logger.info("返回 {}",result);
             return result;
-
         } catch (MyException e) {
             logger.error(methodname +"发生异常");
             logger.error(e.getStatus().getMessage());
@@ -57,7 +58,10 @@ public class ExceptionAspect {
         }catch (Exception e){
             logger.error(methodname +"发生异常");
             logger.error(e.getMessage());
-            return ResponseResult.failure(Status.SysError);
+            if (e instanceof SQLException){
+                return ResponseResult.failure(Status.SysError,e.getMessage());
+            }
+            return ResponseResult.failure(e.getMessage());
         }
     }
 }

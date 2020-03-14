@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(Userinfo user) throws MyException {
+    public void updateUser(Userinfo user) {
         Userinfo userinfo = userinfoMapper.selectByPrimaryKey(user.getUnam());
         if (userinfo == null) {
 //            userinfoMapper.insertSelective(user);
@@ -77,14 +77,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updatePaS(PlanAndSummary pas) {
+    public int updatePaS(PlanAndSummary pas) {
         if (pas.getId() != null) {
-            pas.setWriteTime(new Date());
+            //更新
+            pas.setUpdateTime(new Date());
             planAndSummaryMapper.updateByPrimaryKey(pas);
         } else {
-            pas.setUpdateTime(new Date());
-            planAndSummaryMapper.insert(pas);
+            //插入
+            pas.setWriteTime(new Date());
+            planAndSummaryMapper.insertSelective(pas);
         }
+        return pas.getId();
     }
 
     @Override
@@ -94,6 +97,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public PlanAndSummary getDetailPaS(Integer id, String username) {
+
         return planAndSummaryMapper.selectByPrimaryKey(id, username);
     }
 
@@ -109,7 +113,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updatePassword(String username, String oldpw, String newpw) throws MyException {
+    public void updatePassword(String username, String oldpw, String newpw) {
         Userinfo userinfo = userinfoMapper.login(username, oldpw);
         if (userinfo == null) {
             throw new MyException(Status.FAULT_PASSWORD);
@@ -146,11 +150,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public Integer updateProject(Project project) {
         if (project.getPid() != null) {
+            //更新
             projectMapper.updateByPrimaryKeySelective(project);
         } else {
+            //插入
             projectMapper.insertSelective(project);
         }
-        //插入成员
+        //插入成员,先删除后加入
+        projectMapper.deleteMembers(project);
         projectMapper.insertMembers(project);
         return project.getPid();
     }
@@ -189,6 +196,58 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<DocumentFile> getProjectDocs(Integer pid, String doctype) {
         return documentFileMapper.getProjectDocs(pid,doctype);
+    }
+
+    @Override
+    public void deletePlanAndSummary(Integer id, String username) {
+         planAndSummaryMapper.deleteByPrimaryKey(id,username);
+    }
+
+    @Override
+    public Project getProjectDetail(Integer pid) {
+        return projectMapper.selectByPrimaryKey(pid);
+    }
+
+    /**
+     * 保存一批文件
+     * @param files
+     * @return
+     * @throws IOException
+     */
+    @Override
+    public List<Integer> saveFile(MultipartFile[] files) throws IOException {
+        int length = files.length;
+        ArrayList<Integer> list = new ArrayList<>();
+        for (int i = 0; i < length; i++) {
+            Integer integer = saveFile(files[i]);
+            list.add(i);
+        }
+        return list;
+    }
+
+    @Override
+    public void updateProjectDoc(DocumentFile documentFile) {
+        documentFile.setFpath(null);
+        documentFileMapper.updateByPrimaryKeySelective(documentFile);
+    }
+
+    private Integer saveFile(MultipartFile file) throws IOException {
+        String fname = file.getOriginalFilename();
+        Date time = new Date();
+        //构建图片的保存地址
+        String fpath = base_file_location + time.getTime() + '_' + fname;
+        System.out.println(fpath);
+        //保存文件
+        file.transferTo(new File(fpath));
+        //保存到数据库
+        DocumentFile docfile = new DocumentFile();
+        docfile.setFpath(fpath);
+        docfile.setFname(fname);
+        docfile.setTime(time);
+        documentFileMapper.insertSelective(docfile);
+        //访问地址
+        Integer fid = docfile.getFid();
+        return fid;
     }
 
     private Integer saveFile(MultipartFile file, String doctype,String uname) throws IOException {

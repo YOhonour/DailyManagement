@@ -26,7 +26,9 @@ public enum  Status {
     //用户或用户名错误
     FAULT_PASSWORD(1001,"用户名或密码错误"),
     //参数错误
-    PARAM_IS_INVALID(1002,"参数无效");
+    PARAM_IS_INVALID(1002,"参数无效"),
+    //参数不能为空
+    PARAM_NULL(1003,"参数不能为空" );
 
     private Integer code;
     private String message;

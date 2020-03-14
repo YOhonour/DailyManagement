@@ -9,7 +9,7 @@ import dailymanagement.demo.utils.Status;
  * @date 2020/2/8 11:03
  */
 
-public class MyException extends Exception {
+public class MyException extends RuntimeException {
     private Status status;
 
    public MyException(Status status){

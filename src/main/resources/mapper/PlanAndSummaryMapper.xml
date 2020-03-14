@@ -28,20 +28,17 @@
     where id = #{id,jdbcType=INTEGER}
       and unam = #{unam,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="dailymanagement.demo.bean.PlanAndSummary">
-    insert into plan_and_summary (id, unam, write_time, 
+  <insert id="insert" parameterType="dailymanagement.demo.bean.PlanAndSummary" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+    insert into plan_and_summary (unam, write_time,
       update_time, summary, plan
       )
-    values (#{id,jdbcType=INTEGER}, #{unam,jdbcType=VARCHAR}, #{writeTime,jdbcType=TIMESTAMP}, 
+    values ( #{unam,jdbcType=VARCHAR}, #{writeTime,jdbcType=TIMESTAMP},
       #{updateTime,jdbcType=TIMESTAMP}, #{summary,jdbcType=VARCHAR}, #{plan,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="dailymanagement.demo.bean.PlanAndSummary">
+  <insert id="insertSelective" parameterType="dailymanagement.demo.bean.PlanAndSummary" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
     insert into plan_and_summary
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
       <if test="unam != null">
         unam,
       </if>
@@ -59,9 +56,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
       <if test="unam != null">
         #{unam,jdbcType=VARCHAR},
       </if>
