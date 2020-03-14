@@ -84,6 +84,7 @@ public class DocumentFile {
 
     public void setdUnam(String dUnam) {
         this.dUnam = dUnam;
+    }
     public String getFtype() {
         return ftype;
     }

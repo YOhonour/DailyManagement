@@ -21,6 +21,7 @@ import java.util.List;
 
 @Controller
 public class BlogController {
+
     @Autowired
     BlogService blogService;
 

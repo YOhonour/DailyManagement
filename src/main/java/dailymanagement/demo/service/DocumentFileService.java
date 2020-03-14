@@ -1,7 +1,7 @@
 package dailymanagement.demo.service;
 
 import dailymanagement.demo.bean.DocumentFile;
-import dailymanagement.demo.dao.DocumentFileMapper;
+import dailymanagement.demo.mapper.DocumentFileMapper1;
 import dailymanagement.demo.service.impl.DocumentFileServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ import java.util.List;
 public class DocumentFileService implements DocumentFileServiceImpl {
 
     @Autowired
-    DocumentFileMapper documentFileMapper;
+    DocumentFileMapper1 documentFileMapper;
 
     @Override
     public List<DocumentFile> getAll() {

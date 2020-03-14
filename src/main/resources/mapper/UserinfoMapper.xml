@@ -27,7 +27,7 @@
     select 
     <include refid="Base_Column_List" />
     from userinfo
-    where uid = #{uid,jdbcType=INTEGER}
+    where unam = #{unam,jdbcType=VARCHAR}
   </select>
   <select id="login" parameterType="dailymanagement.demo.bean.Userinfo" resultMap="BaseResultMap">
     select
@@ -37,7 +37,7 @@
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from userinfo
-    where uid = #{uid,jdbcType=INTEGER}
+    where unam = #{unam,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="dailymanagement.demo.bean.Userinfo">
     insert into userinfo (unam, realname, sex, 

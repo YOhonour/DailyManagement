@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="dailymanagement.demo.dao.DocumentFileMapper" >
+<mapper namespace="dailymanagement.demo.mapper.DocumentFileMapper1" >
   <resultMap id="BaseResultMap" type="dailymanagement.demo.bean.DocumentFile" >
     <id column="fid" property="fid" jdbcType="INTEGER" />
     <result column="fname" property="fname" jdbcType="VARCHAR" />
     <result column="time" property="time" jdbcType="TIMESTAMP" />
     <result column="fpath" property="fpath" jdbcType="VARCHAR" />
-    <result column="ftype"  property="ftype"  jdbcType="VARCHAR" />
+    <result column="doctype"  property="ftype"  jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    fid, fname, time, fpath, ftype
+    fid, fname, time, fpath, doctype
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -61,7 +61,7 @@
         fpath,
       </if>
       <if test="ftype != null">
-        ftype
+        doctype
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -78,7 +78,7 @@
         #{fpath,jdbcType=VARCHAR},
       </if>
       <if test="ftype != null ">
-        #{ftype,jdbcType=VARCHAR}
+        #{doctype,jdbcType=VARCHAR}
       </if>
     </trim>
   </insert>

@@ -1,7 +1,7 @@
 package dailymanagement.demo.service;
 
 import dailymanagement.demo.bean.Brainstorm;
-import dailymanagement.demo.dao.BrainstormMapper;
+import dailymanagement.demo.mapper.BrainstormMapper;
 import dailymanagement.demo.service.impl.BrainstormServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

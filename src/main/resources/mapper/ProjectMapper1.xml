@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="dailymanagement.demo.dao.ProjectMapper" >
+<mapper namespace="dailymanagement.demo.mapper.ProjectMapper1" >
   <resultMap id="BaseResultMap" type="dailymanagement.demo.bean.Project" >
     <id column="pid" property="pid" jdbcType="INTEGER" />
     <result column="pname" property="pname" jdbcType="VARCHAR" />
@@ -129,4 +129,6 @@
       introduction = #{introduction,jdbcType=VARCHAR}
     where pid = #{pid,jdbcType=INTEGER}
   </update>
+
+
 </mapper>

@@ -1,7 +1,7 @@
 package dailymanagement.demo.service;
 
 import dailymanagement.demo.bean.BrainChat;
-import dailymanagement.demo.dao.BrainChatMapper;
+import dailymanagement.demo.mapper.BrainChatMapper;
 import dailymanagement.demo.service.impl.BrainChatServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

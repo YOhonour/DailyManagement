@@ -1,13 +1,15 @@
-package dailymanagement.demo.dao;
+package dailymanagement.demo.mapper;
 
 import dailymanagement.demo.bean.Game;
 import dailymanagement.demo.bean.Project;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Mapper
-public interface ProjectMapper {
+@Component
+public interface ProjectMapper1 {
     int deleteByPrimaryKey(Integer pid);
 
     int insert(Project record);

@@ -1,7 +1,13 @@
 package dailymanagement.demo.mapper;
 
 import dailymanagement.demo.bean.Book;
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Component;
 
+import java.util.List;
+
+@Mapper
+@Component
 public interface BookMapper {
     int deleteByPrimaryKey(Integer bid);
 
@@ -14,4 +20,8 @@ public interface BookMapper {
     int updateByPrimaryKeySelective(Book record);
 
     int updateByPrimaryKey(Book record);
+
+    List<Book> getAll();
+
+    List<Book> selectByName(String bname);
 }

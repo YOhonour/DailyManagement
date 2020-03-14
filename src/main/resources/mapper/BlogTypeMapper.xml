@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="dailymanagement.demo.dao.BlogTypeMapper" >
+<mapper namespace="dailymanagement.demo.mapper.BlogTypeMapper" >
   <resultMap id="BaseResultMap" type="dailymanagement.demo.bean.BlogType" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="typename" property="typename" jdbcType="VARCHAR" />

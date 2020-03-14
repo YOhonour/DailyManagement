@@ -1,21 +1,15 @@
 package dailymanagement.demo.controller;
 
-import dailymanagement.demo.bean.Book;
 import dailymanagement.demo.bean.Project;
-import dailymanagement.demo.dao.BookMapper;
-import dailymanagement.demo.dao.ProjectMapper;
 import dailymanagement.demo.service.ProjectService;
 import dailymanagement.demo.utils.JsonDateValueProcessor;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;

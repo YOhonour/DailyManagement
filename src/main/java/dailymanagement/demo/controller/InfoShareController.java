@@ -13,7 +13,6 @@ import net.sf.json.JSON;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
-import org.eclipse.sisu.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.web.bind.WebDataBinder;
@@ -784,7 +783,7 @@ public class InfoShareController {
      * @return
      */
     @GetMapping("/finddoc")
-    public String findByTimeorName(@RequestParam @Nullable String fname, @RequestParam @Nullable Date time,
+    public String findByTimeorName(@RequestParam  String fname, @RequestParam  Date time,
                                    HttpSession session){
         JsonConfig jsonConfig = new JsonConfig();
         jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());

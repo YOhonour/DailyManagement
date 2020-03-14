@@ -1,20 +1,20 @@
 package dailymanagement.demo.service;
 
 import dailymanagement.demo.bean.Blog;
-import dailymanagement.demo.bean.Book;
 import dailymanagement.demo.bean.UserinfoCollection;
-import dailymanagement.demo.dao.BlogMapper;
-import dailymanagement.demo.dao.UserinfoCollectionMapper;
+import dailymanagement.demo.mapper.BlogMapper;
+import dailymanagement.demo.mapper.UserinfoCollectionMapper;
 import dailymanagement.demo.service.impl.BlogServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.UsesSunMisc;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
 public class BlogService  implements BlogServiceImpl {
+
     @Autowired
     BlogMapper blogMapper;
+
     @Autowired
     UserinfoCollectionMapper userinfoCollectionMapper;
 

@@ -1,11 +1,14 @@
-package dailymanagement.demo.dao;
+package dailymanagement.demo.mapper;
 
 import dailymanagement.demo.bean.Blog;
 import dailymanagement.demo.bean.Book;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
+
 @Mapper
+@Component
 public interface BlogMapper {
 
     int deleteByPrimaryKey(Integer bid);

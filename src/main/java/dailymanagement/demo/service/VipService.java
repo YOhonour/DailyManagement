@@ -1,7 +1,7 @@
 package dailymanagement.demo.service;
 
 import dailymanagement.demo.bean.Vip;
-import dailymanagement.demo.dao.VipMapper;
+import dailymanagement.demo.mapper.VipMapper;
 import dailymanagement.demo.service.impl.VipServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

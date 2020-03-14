@@ -1,4 +1,4 @@
-package dailymanagement.demo.dao;
+package dailymanagement.demo.mapper;
 
 import dailymanagement.demo.bean.VipType;
 import org.apache.ibatis.annotations.Mapper;
@@ -20,4 +20,5 @@ public interface VipTypeMapper {
     int updateByPrimaryKey(VipType record);
 
     List<VipType> getAll();
+
 }

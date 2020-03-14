@@ -1,9 +1,8 @@
 package dailymanagement.demo.service;
 
 import dailymanagement.demo.bean.Book;
-import dailymanagement.demo.dao.BookMapper;
+import dailymanagement.demo.mapper.BookMapper;
 import dailymanagement.demo.service.impl.BookServiceImpl;
-import org.apache.ibatis.annotations.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

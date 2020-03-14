@@ -1,15 +1,16 @@
-package dailymanagement.demo.dao;
+package dailymanagement.demo.mapper;
 
 import dailymanagement.demo.bean.DocumentFile;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.eclipse.sisu.Nullable;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;
 
 @Mapper
-public interface DocumentFileMapper {
+@Component
+public interface DocumentFileMapper1 {
     int deleteByPrimaryKey(Integer fid);
 
     int insert(DocumentFile record);

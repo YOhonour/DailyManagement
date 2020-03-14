@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="dailymanagement.demo.dao.BrainstormMapper" >
+<mapper namespace="dailymanagement.demo.mapper.BrainstormMapper" >
   <resultMap id="BaseResultMap" type="dailymanagement.demo.bean.Brainstorm" >
     <id column="tid" property="tid" jdbcType="INTEGER" />
     <result column="title" property="title" jdbcType="VARCHAR" />

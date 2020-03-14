@@ -1,9 +1,11 @@
-package dailymanagement.demo.dao;
+package dailymanagement.demo.mapper;
 
 import dailymanagement.demo.bean.UserinfoCollection;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Component;
 
 @Mapper
+@Component
 public interface UserinfoCollectionMapper {
     int deleteByPrimaryKey(Integer ucid);
 
