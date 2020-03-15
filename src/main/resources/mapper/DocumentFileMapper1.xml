@@ -78,7 +78,7 @@
         #{fpath,jdbcType=VARCHAR},
       </if>
       <if test="ftype != null ">
-        #{doctype,jdbcType=VARCHAR}
+        #{ftype,jdbcType=VARCHAR}
       </if>
     </trim>
   </insert>

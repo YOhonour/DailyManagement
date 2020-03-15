@@ -21,8 +21,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("show")
-@CrossOrigin(origins = "*", maxAge = 3600)
+@RequestMapping("/show")
 public class ShowController {
 
 

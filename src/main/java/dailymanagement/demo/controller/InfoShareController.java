@@ -36,8 +36,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("infoshare")
-@CrossOrigin(origins = "*", maxAge = 3600)
+@RequestMapping("/infoshare")
 public class InfoShareController {
 
     //用于提交表单时将String转换为以下设置的Date格式
@@ -72,7 +71,7 @@ public class InfoShareController {
         for (Book book: list){
             System.out.println(book.toString());
         }
-        session.setAttribute("booklist",list);
+  //      session.setAttribute("booklist",list);
         jsonObject.put("code","200");
         jsonObject.put("message","success");
         jsonObject.put("data",list);
@@ -98,7 +97,7 @@ public class InfoShareController {
         jsonObject.put("code","200");
         jsonObject.put("message","success");
         jsonObject.put("data",books);
-        session.setAttribute("book1",books);
+       // session.setAttribute("book1",books);
         return jsonObject.toString();
     }
 
@@ -779,13 +778,13 @@ public class InfoShareController {
 
     /**
      * 查询文档
-     * @param session
      * @return
      */
     @GetMapping("/finddoc")
-    public String findByTimeorName(@RequestParam  String fname, @RequestParam  Date time,
+    public String findByTimeorName(@RequestParam  String fname,
                                    HttpSession session){
         JsonConfig jsonConfig = new JsonConfig();
+        Date time = new Date();
         jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
         JSONObject jsonObject = new JSONObject();
         System.out.println(time);

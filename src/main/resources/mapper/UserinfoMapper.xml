@@ -256,7 +256,7 @@
 
   <select id="selectByUserName" resultMap="BaseResultMap" parameterType="java.lang.String">
     select
-      <include refid="BaseResultMap"></include>
+      <include refid="Base_Column_List"></include>
     from userinfo
     where unam = #{name,jdbcType=VARCHAR}
   </select>

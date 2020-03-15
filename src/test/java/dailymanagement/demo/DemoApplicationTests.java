@@ -4,6 +4,7 @@ import dailymanagement.demo.bean.PlanAndSummary;
 import dailymanagement.demo.bean.Project;
 import dailymanagement.demo.bean.Userinfo;
 import dailymanagement.demo.bean.vo.PlatFormUser;
+import dailymanagement.demo.controller.InfoShareController;
 import dailymanagement.demo.controller.UserController;
 import dailymanagement.demo.exception.MyException;
 import dailymanagement.demo.mapper.ProjectMapper;
@@ -29,6 +30,9 @@ class DemoApplicationTests {
 
     @Autowired
     private UserController userController;
+
+    @Autowired
+    private InfoShareController infoShareController;
 
 
 
@@ -69,8 +73,9 @@ class DemoApplicationTests {
     void getTest(){
 //        Project project = projectMapper.selectByPrimaryKey(6);
 //        System.out.println(project.getProgress());
-        ResponseResult detail = userController.getUserProjectDetail(29);
-        System.out.println(detail.getData());
+//        ResponseResult detail = userController.getUserProjectDetail(29);
+//        System.out.println(detail.getData());
+        infoShareController.getBookType1(null);
     }
 
 }

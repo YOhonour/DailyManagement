@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="dailymanagement.demo.mapper.UserinfoCollectionMapper" >
+<mapper namespace="dailymanagement.demo.dao.UserinfoCollectionMapper" >
   <resultMap id="BaseResultMap" type="dailymanagement.demo.bean.UserinfoCollection" >
     <id column="ucid" property="ucid" jdbcType="INTEGER" />
     <result column="userid" property="userid" jdbcType="INTEGER" />
@@ -10,11 +10,28 @@
     ucid, userid, blogid
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from userinfo_collection
     where ucid = #{ucid,jdbcType=INTEGER}
   </select>
+
+  <select id="selectByuseridAndBlogid"  resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from userinfo_collection
+    where userid = #{userId,jdbcType=INTEGER}
+    and  blogid= #{blogId,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectBlogidByUserid"  resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from userinfo_collection
+    where userid = #{userId,jdbcType=INTEGER}
+  </select>
+
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from userinfo_collection
     where ucid = #{ucid,jdbcType=INTEGER}
@@ -76,6 +93,4 @@
       blogid = #{blogid,jdbcType=INTEGER}
     where ucid = #{ucid,jdbcType=INTEGER}
   </update>
-
-
 </mapper>
