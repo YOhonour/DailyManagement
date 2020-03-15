@@ -1,4 +1,4 @@
-package dailymanagement.demo.service.Impl;
+package dailymanagement.demo.service.impl;
 
 import dailymanagement.demo.bean.*;
 import dailymanagement.demo.bean.resultbean.BaseProject;

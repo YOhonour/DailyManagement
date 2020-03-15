@@ -76,4 +76,6 @@
       blogid = #{blogid,jdbcType=INTEGER}
     where ucid = #{ucid,jdbcType=INTEGER}
   </update>
+
+
 </mapper>

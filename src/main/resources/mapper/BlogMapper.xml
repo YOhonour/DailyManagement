@@ -13,7 +13,7 @@
     bid, type, comment, filepath, authorid, likenum
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from blog
     where bid = #{bid,jdbcType=INTEGER}
@@ -46,10 +46,10 @@
     where bid = #{bid,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="dailymanagement.demo.bean.Blog" >
-    insert into blog (bid, type, comment, 
+    insert into blog (bid, type, comment,
       filepath, authorid, likenum
       )
-    values (#{bid,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{comment,jdbcType=VARCHAR}, 
+    values (#{bid,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{comment,jdbcType=VARCHAR},
       #{filepath,jdbcType=VARCHAR}, #{authorid,jdbcType=INTEGER}, #{likenum,jdbcType=INTEGER}
       )
   </insert>

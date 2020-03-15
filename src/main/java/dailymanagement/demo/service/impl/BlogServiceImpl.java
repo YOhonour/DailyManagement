@@ -32,4 +32,13 @@ public interface BlogServiceImpl {
     int collection(int blogId, int userId);
 
     int collectioncancel(int userId, int blogId);
+
+
+    int iscollection(int blogId, int userId);
+
+    int publishBlog(int userId, Blog blog);
+
+    int finduserid(String name);
+
+    List<Blog> blogUserCollection(int userId);
 }
