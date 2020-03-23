@@ -1,5 +1,7 @@
 package dailymanagement.demo.bean;
 
+import java.util.List;
+
 public class BlogResult {
 
     private Blog blog;
@@ -8,8 +10,19 @@ public class BlogResult {
 
     private boolean iscollection;
 
-    public BlogResult(Blog blog, boolean islike, boolean iscollection) {
+    private List<String> userinfo;
+
+    public List<String> getUserinfo() {
+        return userinfo;
+    }
+
+    public void setUserinfo(List<String> userinfo) {
+        this.userinfo = userinfo;
+    }
+
+    public BlogResult(Blog blog, boolean islike, boolean iscollection, List<String> userinfo) {
         this.blog = blog;
+        this.userinfo = userinfo;
         this.islike = islike;
         this.iscollection = iscollection;
     }

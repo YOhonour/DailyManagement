@@ -141,7 +141,7 @@
   </update>
 
   <select id="getUserProjects" parameterType="java.lang.String" resultType="dailymanagement.demo.bean.resultbean.BaseProject">
-    select pid,pname,image
+    select pid,pname,image,progress
     from project
     where p_realname = #{username}
     or pid in (select pid from project_member where member = #{username});

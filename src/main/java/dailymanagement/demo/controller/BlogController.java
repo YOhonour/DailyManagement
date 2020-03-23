@@ -1,5 +1,6 @@
 package dailymanagement.demo.controller;
 
+import dailymanagement.demo.annotation.UserLogin;
 import dailymanagement.demo.bean.*;
 import dailymanagement.demo.service.BlogService;
 import dailymanagement.demo.service.BrainstormService;
@@ -10,11 +11,9 @@ import io.swagger.annotations.ApiParam;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,8 +21,11 @@ import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 @Controller
+@UserLogin(required = false)
+@RequestMapping("/api")
 public class BlogController {
     @Autowired
     BlogService blogService;
@@ -33,7 +35,6 @@ public class BlogController {
 
     @Autowired
     BrainChatServiceImpl brainChatServiceImpl;
-
     @Autowired
     FileService fileService;
 
@@ -45,13 +46,14 @@ public class BlogController {
         JSONObject jsonObject = new JSONObject();
         List<Blog> list = blogService.getall();
         List<BlogResult> resultlist = new LinkedList();
-        boolean collection = false;
         for (Blog blog : list) {
+            boolean collection = false;
             int i = blogService.iscollection(blog.getBid(), userid);
             if (i == 1) {
                 collection = true;
             }
-            resultlist.add(new BlogResult(blog, true, collection));
+            List<String> userinfo = blogService.findUserNameAndPhoto(blog.getAuthorid());
+            resultlist.add(new BlogResult(blog, true, collection, userinfo));
         }
         session.setAttribute("bloglist", list);
         jsonObject.put("code", "200");
@@ -68,13 +70,14 @@ public class BlogController {
         JSONObject jsonObject = new JSONObject();
         List<Blog> list = blogService.getallbytypeid(type);
         List<BlogResult> resultlist = new LinkedList();
-        boolean collection = false;
         for (Blog blog : list) {
+            boolean collection = false;
             int i = blogService.iscollection(blog.getBid(), userid);
             if (i == 1) {
                 collection = true;
             }
-            resultlist.add(new BlogResult(blog, true, collection));
+            List<String> userinfo = blogService.findUserNameAndPhoto(blog.getAuthorid());
+            resultlist.add(new BlogResult(blog, true, collection, userinfo));
         }
         jsonObject.put("code", "200");
         jsonObject.put("message", "success");
@@ -90,13 +93,14 @@ public class BlogController {
         JSONObject jsonObject = new JSONObject();
         List<Blog> list = blogService.getallblogbyuserid(userId);
         List<BlogResult> resultlist = new LinkedList();
-        boolean collection = false;
         for (Blog blog : list) {
+            boolean collection = false;
             int i = blogService.iscollection(blog.getBid(), userId);
             if (i == 1) {
                 collection = true;
             }
-            resultlist.add(new BlogResult(blog, true, collection));
+            List<String> userinfo = blogService.findUserNameAndPhoto(blog.getAuthorid());
+            resultlist.add(new BlogResult(blog, true, collection, userinfo));
         }
         session.setAttribute("bloglist", list);
         jsonObject.put("code", "200");
@@ -212,13 +216,14 @@ public class BlogController {
         JSONObject jsonObject = new JSONObject();
         List<Blog> list = blogService.blogUserCollection(userId);
         List<BlogResult> resultlist = new LinkedList();
-        boolean collection = false;
         for (Blog blog : list) {
+            boolean collection = false;
             int i = blogService.iscollection(blog.getBid(), userId);
             if (i == 1) {
                 collection = true;
             }
-            resultlist.add(new BlogResult(blog, true, collection));
+            List<String> userinfo = blogService.findUserNameAndPhoto(blog.getAuthorid());
+            resultlist.add(new BlogResult(blog, true, collection, userinfo));
         }
         jsonObject.put("code", "200");
         jsonObject.put("message", "success");
@@ -234,7 +239,6 @@ public class BlogController {
         int userid = blogService.finduserid(name);
         JSONObject jsonObject = new JSONObject();
         int i = brainstormService.publish(title, userid);
-        System.out.println(i);
         jsonObject.put("code", "200");
         jsonObject.put("message", "success");
         jsonObject.put("data", "发布idea成功");
@@ -274,9 +278,16 @@ public class BlogController {
     public String brainchatsBybrainid(HttpSession session, int brainid) {
         JSONObject jsonObject = new JSONObject();
         List<BrainChat> list = brainChatServiceImpl.brainchatsBybrainid(brainid);
+        List<BrainChatResult> listresult = new LinkedList<>();
+        for (BrainChat chat : list) {
+            List<String> userinfo = blogService.findUserNameAndPhoto(chat.getFrom());
+            BrainChatResult brainChat = new BrainChatResult(chat, userinfo);
+            listresult.add(brainChat);
+        }
         jsonObject.put("code", "200");
         jsonObject.put("message", "success");
-        jsonObject.put("data", list);
+        jsonObject.put("data", listresult);
+
         return jsonObject.toString();
     }
 
@@ -284,12 +295,23 @@ public class BlogController {
     @PostMapping("/blogs/rankinglist")
     @ResponseBody
     @ApiOperation(value = "排行榜接口", notes = "参数： <br><br>")
-    public String blogRankingList() {
+    public String blogRankingList(String name) {
+        int userid = blogService.finduserid(name);
         JSONObject jsonObject = new JSONObject();
-        System.out.println();
+        List<Blog> list = blogService.getblogRankingList();
+        List<BlogResult> resultlist = new LinkedList();
+        for (Blog blog : list) {
+            boolean collection = false;
+            int i = blogService.iscollection(blog.getBid(), userid);
+            if (i == 1) {
+                collection = true;
+            }
+            List<String> userinfo = blogService.findUserNameAndPhoto(blog.getAuthorid());
+            resultlist.add(new BlogResult(blog, true, collection, userinfo));
+        }
         jsonObject.put("code", "200");
         jsonObject.put("message", "success");
-        jsonObject.put("data", "成功");
+        jsonObject.put("data", resultlist);
         return jsonObject.toString();
     }
 
@@ -304,6 +326,20 @@ public class BlogController {
         jsonObject.put("code", "200");
         jsonObject.put("message", "success");
         jsonObject.put("data", id);
+        return jsonObject.toString();
+    }
+
+
+    @PostMapping("/find/nameandphoto")
+    @ResponseBody
+    @ApiOperation(value = "找到用户名字和头像", notes = "参数： <br>id<br>")
+    public String findUserNameAndPhoto(int id) {
+        JSONObject jsonObject = new JSONObject();
+        List<String> userinfo = blogService.findUserNameAndPhoto(id);
+        System.out.println(userinfo.get(0) + userinfo.get(1));
+        jsonObject.put("code", "200");
+        jsonObject.put("message", "success");
+        jsonObject.put("data", userinfo);
         return jsonObject.toString();
     }
 

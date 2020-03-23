@@ -261,4 +261,11 @@
     where unam = #{name,jdbcType=VARCHAR}
   </select>
 
+  <select id="selectByuid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  select
+  <include refid="Base_Column_List"/>
+  from userinfo
+  where uid = #{uid,jdbcType=INTEGER}
+  </select>
+
 </mapper>

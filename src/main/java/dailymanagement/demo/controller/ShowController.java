@@ -1,5 +1,6 @@
 package dailymanagement.demo.controller;
 
+import dailymanagement.demo.annotation.UserLogin;
 import dailymanagement.demo.bean.Project;
 import dailymanagement.demo.service.ProjectService;
 import dailymanagement.demo.utils.JsonDateValueProcessor;
@@ -21,7 +22,8 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/show")
+@RequestMapping("/api/show")
+@UserLogin(required = false)
 public class ShowController {
 
 
@@ -52,8 +54,11 @@ public class ShowController {
         c1.setTime(new Date());
         Calendar c2 = Calendar.getInstance();
         for (Project project: projects){
-            c2.setTime(project.getCloseTime());
-            int result = c1.compareTo(c2);
+            int result = -1;
+            if (project.getCloseTime() != null){
+                c2.setTime(project.getCloseTime());
+                 result = c1.compareTo(c2);
+            }
             if (result < 0){
                 System.out.println(project.toString());
                 list.add(project);
@@ -85,8 +90,11 @@ public class ShowController {
         c1.setTime(new Date());
         Calendar c2 = Calendar.getInstance();
         for (Project project: projects){
-            c2.setTime(project.getCloseTime());
-            int result = c1.compareTo(c2);
+            int result = -1;
+            if (project.getCloseTime() != null){
+                c2.setTime(project.getCloseTime());
+                result = c1.compareTo(c2);
+            }
             if (result > 0){
                 System.out.println(project.toString());
                 list.add(project);

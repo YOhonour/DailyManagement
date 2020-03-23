@@ -1,5 +1,6 @@
 package dailymanagement.demo.controller;
 
+import dailymanagement.demo.annotation.UserLogin;
 import dailymanagement.demo.bean.Book;
 import dailymanagement.demo.bean.DocumentFile;
 import dailymanagement.demo.bean.Vip;
@@ -36,7 +37,8 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/infoshare")
+@RequestMapping("/api/infoshare")
+@UserLogin(required = false)
 public class InfoShareController {
 
     //用于提交表单时将String转换为以下设置的Date格式
@@ -665,7 +667,7 @@ public class InfoShareController {
         List<DocumentFile> list = documentFileService.getAll();
         List<DocumentFile> documentFiles = new ArrayList<>();
         for (DocumentFile documentFile: list){
-            if (documentFile.getFtype().equals("项目汇报")){
+            if (documentFile.getFtype() != null && documentFile.getFtype().equals("项目汇报")){
                 documentFiles.add(documentFile);
                 System.out.println(documentFile.toString());
             }
@@ -691,7 +693,7 @@ public class InfoShareController {
         List<DocumentFile> list = documentFileService.getAll();
         List<DocumentFile> documentFiles = new ArrayList<>();
         for (DocumentFile documentFile: list){
-            if (documentFile.getFtype().equals("技术交流")){
+            if (documentFile.getFtype() != null &&documentFile.getFtype().equals("技术交流")){
                 documentFiles.add(documentFile);
                 System.out.println(documentFile.toString());
             }
@@ -715,9 +717,10 @@ public class InfoShareController {
         jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
         JSONObject jsonObject = new JSONObject();
         List<DocumentFile> list = documentFileService.getAll();
+        System.out.println(list);
         List<DocumentFile> documentFiles = new ArrayList<>();
         for (DocumentFile documentFile: list){
-            if (documentFile.getFtype().equals("会议纪要")){
+            if (documentFile.getFtype() != null &&documentFile.getFtype().equals("会议纪要")){
                 documentFiles.add(documentFile);
                 System.out.println(documentFile.toString());
             }

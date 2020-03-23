@@ -35,4 +35,13 @@ public class UserinfoCollection {
         this.userid = userid;
         this.blogid = blogid;
     }
+
+    public UserinfoCollection(Integer ucid, Integer userid, Integer blogid) {
+        this.ucid = ucid;
+        this.userid = userid;
+        this.blogid = blogid;
+    }
+
+    public UserinfoCollection() {
+    }
 }

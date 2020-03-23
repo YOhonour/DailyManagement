@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.UsesSunMisc;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -85,6 +86,7 @@ public class BlogService implements BlogServiceImpl {
         if (userinfo != null) {
             return userinfo.getUid();
         }
+
         return -1;
     }
 
@@ -100,6 +102,22 @@ public class BlogService implements BlogServiceImpl {
 
         }
         return blogs;
+    }
+
+    @Override
+    public List<Blog> getblogRankingList() {
+        return blogMapper.selectranklist();
+    }
+
+    @Override
+    public List<String> findUserNameAndPhoto(int id) {
+        List<String> list = new ArrayList<>();
+        Userinfo userinfo = userinfoMapper.selectByuid(id);
+        if (userinfo != null) {
+            list.add(userinfo.getUnam());
+            list.add(userinfo.getUpath());
+        }
+        return list;
     }
 
     @Override

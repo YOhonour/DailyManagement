@@ -48,6 +48,7 @@ public class Project {
 
     @ApiModelProperty(value = "项目进度",required = false)
     private Integer progress;
+
     private List<Game> game;
 
     public Integer getPid() {

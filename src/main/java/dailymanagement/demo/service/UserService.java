@@ -96,10 +96,10 @@ public interface UserService {
     DocumentFile getFile(Integer fid);
 
     /**
-     * 上传或更新项目
+     * 上传项目
      * @param project  项目信息
      */
-    Integer updateProject(Project project);
+    Integer saveProject(Project project);
 
     /**
      * 上传图片
@@ -169,4 +169,11 @@ public interface UserService {
      * @param documentFile
      */
     void updateProjectDoc(DocumentFile documentFile);
+
+    /**
+     * 更新项目信息
+     * @param project
+     * @return
+     */
+    Integer updateProject(Project project);
 }

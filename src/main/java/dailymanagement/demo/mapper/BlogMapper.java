@@ -2,11 +2,11 @@ package dailymanagement.demo.mapper;
 
 import dailymanagement.demo.bean.Blog;
 import dailymanagement.demo.bean.Book;
+import dailymanagement.demo.bean.Userinfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-
 @Mapper
 @Component
 public interface BlogMapper {
@@ -34,4 +34,8 @@ public interface BlogMapper {
     int cancelLike(int bid);
 
     int colletion(int blogId, int userId);
+
+    List<Blog> selectranklist();
+
+
 }

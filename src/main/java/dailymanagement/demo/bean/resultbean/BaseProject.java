@@ -12,6 +12,7 @@ import net.bytebuddy.implementation.bytecode.assign.TypeCasting;
 public class BaseProject {
     private Integer pid;
     private String pname;
+    private Integer progress;
     /**
      * 图片url
      */
@@ -38,5 +39,13 @@ public class BaseProject {
 
     public void setImage  (String image  ) {
         this.image   = image  ;
+    }
+
+    public Integer getProgress() {
+        return progress;
+    }
+
+    public void setProgress(Integer progress) {
+        this.progress = progress;
     }
 }

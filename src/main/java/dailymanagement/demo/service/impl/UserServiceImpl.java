@@ -148,17 +148,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Integer updateProject(Project project) {
-        if (project.getPid() != null) {
-            //更新
-            projectMapper.updateByPrimaryKeySelective(project);
-        } else {
-            //插入
-            projectMapper.insertSelective(project);
+    public Integer saveProject(Project project) {
+        //插入项目
+        projectMapper.insertSelective(project);
+        //如果成员不为空，插入成员
+        if(project.getMembers() != null && !project.getMembers().isEmpty()){
+            projectMapper.insertMembers(project);
         }
-        //插入成员,先删除后加入
-        projectMapper.deleteMembers(project);
-        projectMapper.insertMembers(project);
+        //返回id
         return project.getPid();
     }
 
@@ -220,7 +217,7 @@ public class UserServiceImpl implements UserService {
         ArrayList<Integer> list = new ArrayList<>();
         for (int i = 0; i < length; i++) {
             Integer integer = saveFile(files[i]);
-            list.add(i);
+            list.add(integer);
         }
         return list;
     }
@@ -231,9 +228,25 @@ public class UserServiceImpl implements UserService {
         documentFileMapper.updateByPrimaryKeySelective(documentFile);
     }
 
+    @Override
+    public Integer updateProject(Project project) {
+        if (project.getPid() == null) {
+            throw new RuntimeException("请传入项目id");
+        }
+        //更新项目信息
+        projectMapper.updateByPrimaryKeySelective(project);
+        //更新成员,先删除后加入
+        projectMapper.deleteMembers(project);
+        if(project.getMembers() != null && !project.getMembers().isEmpty()){
+            projectMapper.insertMembers(project);
+        }
+        return project.getPid();
+    }
+
     private Integer saveFile(MultipartFile file) throws IOException {
         String fname = file.getOriginalFilename();
         Date time = new Date();
+
         //构建图片的保存地址
         String fpath = base_file_location + time.getTime() + '_' + fname;
         System.out.println(fpath);
@@ -247,6 +260,7 @@ public class UserServiceImpl implements UserService {
         documentFileMapper.insertSelective(docfile);
         //访问地址
         Integer fid = docfile.getFid();
+        System.out.println(fid);
         return fid;
     }
 
@@ -270,6 +284,4 @@ public class UserServiceImpl implements UserService {
         return fid;
 
     }
-
-
 }
