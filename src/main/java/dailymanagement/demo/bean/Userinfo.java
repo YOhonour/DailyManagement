@@ -56,6 +56,9 @@ public class Userinfo {
 
     private String password;
 
+    private Integer uid;
+
+
     @ApiModelProperty(value = "平台")
     private String platform;
 
@@ -195,5 +198,14 @@ public class Userinfo {
     public void setPlatform(String platform) {
         this.platform = platform;
     }
+
+    public Integer getUid() {
+        return uid;
+    }
+
+    public void setUid(Integer uid) {
+        this.uid = uid;
+    }
+
 
 }

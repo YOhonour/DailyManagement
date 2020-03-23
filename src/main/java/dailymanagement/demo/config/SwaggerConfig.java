@@ -34,4 +34,5 @@ public class SwaggerConfig {
         Contact contact = new Contact("itrover", "www.itcover.cn", "1172610139@qq.com");
         return new ApiInfo("我的Swaggger", "用于测试","1.0",null,contact,"Apache 2.0", "http://www.apache.org/licenses/LICENSE-2.0",new ArrayList());
     }
+
 }

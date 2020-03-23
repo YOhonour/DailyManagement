@@ -9,7 +9,7 @@
     id, typename
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from blog_type
     where id = #{id,jdbcType=INTEGER}

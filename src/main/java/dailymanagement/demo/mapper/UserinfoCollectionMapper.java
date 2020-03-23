@@ -4,6 +4,8 @@ import dailymanagement.demo.bean.UserinfoCollection;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Mapper
 @Component
 public interface UserinfoCollectionMapper {
@@ -20,4 +22,8 @@ public interface UserinfoCollectionMapper {
     int updateByPrimaryKey(UserinfoCollection record);
 
     int deleteByuseridAndBlogid(int userId, int blogId);
+
+    UserinfoCollection selectByuseridAndBlogid(int userId, int blogId);
+
+    List<UserinfoCollection> selectBlogidByUserid(int userId);
 }

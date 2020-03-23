@@ -1,23 +1,31 @@
 package dailymanagement.demo.service;
 
 import dailymanagement.demo.bean.Blog;
+import dailymanagement.demo.bean.Book;
+import dailymanagement.demo.bean.Userinfo;
 import dailymanagement.demo.bean.UserinfoCollection;
 import dailymanagement.demo.mapper.BlogMapper;
 import dailymanagement.demo.mapper.UserinfoCollectionMapper;
+import dailymanagement.demo.mapper.UserinfoMapper;
 import dailymanagement.demo.service.impl.BlogServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.UsesSunMisc;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
-@Service
-public class BlogService  implements BlogServiceImpl {
 
+@Service
+public class BlogService implements BlogServiceImpl {
+    @Autowired
+    UserinfoMapper userinfoMapper;
     @Autowired
     BlogMapper blogMapper;
-
     @Autowired
     UserinfoCollectionMapper userinfoCollectionMapper;
-
+    @Autowired
+    BlogServiceImpl blogServiceImpl;
 
     @Override
     public List<Blog> getall() {
@@ -36,11 +44,11 @@ public class BlogService  implements BlogServiceImpl {
 
     @Override
     public int like(int blogId, int model) {
-        if(model==1){
+        if (model == 1) {
             return blogMapper.like(blogId);
-        }else if(model==-1) {
+        } else if (model == -1) {
             return blogMapper.cancelLike(blogId);
-        }else {
+        } else {
             return 0;
         }
     }
@@ -48,12 +56,68 @@ public class BlogService  implements BlogServiceImpl {
     @Override
     public int collection(int blogId, int userId) {
         UserinfoCollection userinfoCollection = new UserinfoCollection(userId, blogId);
-        return  userinfoCollectionMapper.insert(userinfoCollection);
+        return userinfoCollectionMapper.insert(userinfoCollection);
     }
 
     @Override
     public int collectioncancel(int userId, int blogId) {
-        return userinfoCollectionMapper.deleteByuseridAndBlogid(userId,blogId);
+        return userinfoCollectionMapper.deleteByuseridAndBlogid(userId, blogId);
+    }
+
+    @Override
+    public int iscollection(int blogId, int userId) {
+        UserinfoCollection userinfoCollection = userinfoCollectionMapper.selectByuseridAndBlogid(userId, blogId);
+        if (userinfoCollection != null) {
+            return 1;//收藏了
+        }
+        return 0;//没收藏
+    }
+
+
+    @Override
+    public int publishBlog(int userId, Blog blog) {
+        return blogMapper.insert(blog);
+    }
+
+    @Override
+    public int finduserid(String name) {
+        Userinfo userinfo = userinfoMapper.selectByUserName(name);
+        System.out.println(userinfo);
+        if (userinfo != null) {
+            return userinfo.getUid();
+        }
+
+        return -1;
+    }
+
+    @Override
+    public List<Blog> blogUserCollection(int userId) {
+        List<UserinfoCollection> list = userinfoCollectionMapper.selectBlogidByUserid(userId);
+        LinkedList<Blog> blogs = new LinkedList<>();
+        for (int i = 0; i < list.size(); i++) {
+            UserinfoCollection userinfoCollection = list.get(i);
+            Integer blogid = userinfoCollection.getBlogid();
+            Blog blog = blogMapper.selectByPrimaryKey(blogid);
+            blogs.add(blog);
+
+        }
+        return blogs;
+    }
+
+    @Override
+    public List<Blog> getblogRankingList() {
+        return blogMapper.selectranklist();
+    }
+
+    @Override
+    public List<String> findUserNameAndPhoto(int id) {
+        List<String> list = new ArrayList<>();
+        Userinfo userinfo = userinfoMapper.selectByuid(id);
+        if (userinfo != null) {
+            list.add(userinfo.getUnam());
+            list.add(userinfo.getUpath());
+        }
+        return list;
     }
 
     @Override

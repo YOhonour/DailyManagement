@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="dailymanagement.demo.mapper.UserinfoMapper">
   <resultMap id="BaseResultMap" type="dailymanagement.demo.bean.Userinfo">
+    <id column="uid" property="uid"></id>
     <id column="unam" jdbcType="VARCHAR" property="unam" />
     <result column="realname" jdbcType="VARCHAR" property="realname" />
     <result column="sex" jdbcType="CHAR" property="sex" />
@@ -20,39 +21,44 @@
     <result column="password" jdbcType="VARCHAR" property="password" />
   </resultMap>
   <sql id="Base_Column_List">
-    unam, realname, sex, upath, school, major, birthday, jointime, prj_history, skills, 
+   uid, unam, realname, sex, upath, school, major, birthday, jointime, prj_history, skills,
     title, phone, qq, weibo, mail, password
   </sql>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from userinfo
     where unam = #{unam,jdbcType=VARCHAR}
   </select>
+
   <select id="login" parameterType="dailymanagement.demo.bean.Userinfo" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from userinfo
     where unam = #{unam} and password = #{password}
   </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from userinfo
     where unam = #{unam,jdbcType=INTEGER}
   </delete>
+
   <insert id="insert" parameterType="dailymanagement.demo.bean.Userinfo">
-    insert into userinfo (unam, realname, sex, 
+    insert into userinfo (unam, realname, sex,
       upath, school, major, 
       birthday, jointime, prj_history, 
       skills, title, phone, 
       qq, weibo, mail, password
       )
-    values (#{uid,jdbcType=INTEGER}, #{unam,jdbcType=VARCHAR}, #{realname,jdbcType=VARCHAR}, #{sex,jdbcType=CHAR},
+    values ( #{unam,jdbcType=VARCHAR}, #{realname,jdbcType=VARCHAR}, #{sex,jdbcType=CHAR},
       #{upath,jdbcType=VARCHAR}, #{school,jdbcType=VARCHAR}, #{major,jdbcType=VARCHAR}, 
       #{birthday,jdbcType=TIMESTAMP}, #{jointime,jdbcType=TIMESTAMP}, #{prjHistory,jdbcType=VARCHAR}, 
       #{skills,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{phone,jdbcType=CHAR}, 
       #{qq,jdbcType=CHAR}, #{weibo,jdbcType=CHAR}, #{mail,jdbcType=CHAR}, #{password,jdbcType=VARCHAR}
       )
   </insert>
+
   <insert id="insertSelective" parameterType="dailymanagement.demo.bean.Userinfo">
     insert into userinfo
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -207,6 +213,7 @@
   <update id="updatePassword">
     update userinfo set password = #{password} where unam = #{username}
   </update>
+
   <update id="updateByPrimaryKey" parameterType="dailymanagement.demo.bean.Userinfo">
     update userinfo
     set unam = #{unam,jdbcType=INTEGER},
@@ -231,9 +238,11 @@
   <insert id="savefile" parameterType="dailymanagement.demo.bean.DocumentFile" keyColumn="fid" keyProperty="fid" useGeneratedKeys="true">
     insert into document_file(fname,fpath,`time`,doctype,d_unam) values (#{fname},#{fpath},#{time},#{doctype},#{dUnam});
   </insert>
+
   <select id="getFileById" parameterType="java.lang.Integer" resultType="dailymanagement.demo.bean.DocumentFile">
     select fname , `time` , fpath,doctype,p_id as pid ,fid,d_unam as dUnam from document_file where fid = #{fid};
   </select>
+
   <select id="getPlatforms" resultType="java.lang.String">
     select pfname from platform;
   </select>
@@ -244,4 +253,19 @@
       where platform = #{platform};
     </if>
   </select>
+
+  <select id="selectByUserName" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+      <include refid="Base_Column_List"></include>
+    from userinfo
+    where unam = #{name,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByuid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  select
+  <include refid="Base_Column_List"/>
+  from userinfo
+  where uid = #{uid,jdbcType=INTEGER}
+  </select>
+
 </mapper>

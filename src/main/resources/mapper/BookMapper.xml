@@ -38,9 +38,9 @@
     where bid = #{bid,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="dailymanagement.demo.bean.Book" >
-    insert into book (bid, bname,
+    insert into book ( bname,
       introduction, status, btype)
-    values (#{bid,jdbcType=INTEGER}, #{bname,jdbcType=VARCHAR}, #{introduction,jdbcType=VARCHAR},
+    values ( #{bname,jdbcType=VARCHAR}, #{introduction,jdbcType=VARCHAR},
     #{status,jdbcType=CHAR}, #{btype,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="dailymanagement.demo.bean.Book">

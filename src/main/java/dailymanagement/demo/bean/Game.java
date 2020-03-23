@@ -1,6 +1,7 @@
 package dailymanagement.demo.bean;
 
 public class Game {
+
     private Integer gid;
 
     private Integer pgid;

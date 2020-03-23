@@ -2,6 +2,7 @@ package dailymanagement.demo.controller;
 
 import dailymanagement.demo.annotation.UserLogin;
 import dailymanagement.demo.bean.Userinfo;
+import dailymanagement.demo.bean.vo.Login;
 import dailymanagement.demo.exception.MyException;
 import dailymanagement.demo.service.UserService;
 import dailymanagement.demo.utils.JwtUtil;
@@ -14,10 +15,7 @@ import org.apache.catalina.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -33,6 +31,7 @@ import java.util.HashMap;
  */
 @RestController
 @Api(tags = "登陆相关")
+@RequestMapping("/api")
 public class LoginController {
 
     private final Logger logger = LoggerFactory.getLogger(LoginController.class);
@@ -46,27 +45,24 @@ public class LoginController {
 
     /**
      * 登陆
-     * @param username
-     * @param password
      * @return
      * @throws MyException
      */
     @ApiOperation("登陆")
     @PostMapping("/login")
-    public ResponseResult login(@RequestParam @ApiParam(value = "用户名",required = true) String username,
-                        @RequestParam @ApiParam(value = "密码",required = true) String password) {
+    public ResponseResult login(@RequestBody Login login) {
 
-        Userinfo user = userService.login(username, password);
+        Userinfo user = userService.login(login.getUsername(), login.getPassword());
         if(user != null){
             //登陆成功
             String token = jwtUtil.createToken(user);
-            logger.info(username+"登陆成功");
+            logger.info(login.getUsername()+"登陆成功");
             HashMap<String, Object> map = new HashMap<>();
             map.put("token",token);
             return ResponseResult.success(token);
         }else{
-            logger.error("用户名"+username);
-            logger.error("密码"+password);
+            logger.error("用户名"+login.getUsername());
+            logger.error("密码"+login.getPassword());
             return ResponseResult.failure(Status.FAULT_PASSWORD);
         }
     }

@@ -69,7 +69,7 @@ public interface UserinfoMapper {
     List<PlatFormUser> getPlatformUser(@Nullable @Param(value = "platform") String platform);
 
 
+    Userinfo selectByUserName(String name);
 
-
-
+    Userinfo selectByuid(int id);
 }

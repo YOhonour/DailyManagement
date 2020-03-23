@@ -46,7 +46,7 @@
       <if test="pid != null">
         p_id,
       </if>
-      <if test="d_unam != null">
+      <if test="dUnam != null">
         d_unam,
       </if>
     </trim>
@@ -66,7 +66,7 @@
       <if test="pid != null">
      #{pid},
       </if>
-      <if test="d_realname != null">
+      <if test="dUnam != null">
        #{dUnam}
       </if>
     </trim>
@@ -89,8 +89,8 @@
       <if test="pid != null">
         p_id = #{pid},
       </if>
-    <if test="d_unam != null">
-      d_realname = #{dUnam}
+    <if test="dUnam != null">
+      d_unam = #{dUnam}
     </if>
     </set>
     where fid = #{fid,jdbcType=INTEGER}

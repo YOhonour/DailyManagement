@@ -7,31 +7,21 @@ import dailymanagement.demo.bean.resultbean.PandS;
 import dailymanagement.demo.bean.vo.Password;
 import dailymanagement.demo.bean.vo.PlatFormUser;
 import dailymanagement.demo.bean.vo.ProjectDoc;
-import dailymanagement.demo.bean.vo.TokenUser;
-import dailymanagement.demo.exception.MyException;
 import dailymanagement.demo.service.UserService;
-import dailymanagement.demo.utils.JwtUtil;
 import dailymanagement.demo.utils.ResponseResult;
 import dailymanagement.demo.utils.Status;
 import dailymanagement.demo.utils.TokenUserTool;
 import io.swagger.annotations.*;
-import jdk.nashorn.internal.parser.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.constraints.NotNull;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author MaYunHao
@@ -40,7 +30,7 @@ import java.util.Map;
  * @date 2020/2/8 15:13
  */
 @RestController
-@RequestMapping(value = "/user")
+@RequestMapping(value = "/api/user")
 @Api(tags = "用户相关")
 @UserLogin(required = false)
 public class UserController {
@@ -245,14 +235,27 @@ public class UserController {
         return ResponseEntity.status(400).build();
     }
 
-    @ApiOperation("上传或更新项目")
+    @ApiOperation("上传项目")
+    @PostMapping("/saveProject")
+    public ResponseResult saveProject(@RequestBody @ApiParam(value = "项目信息: 不带id", required = true) Project project) {
+        Integer id = userService.saveProject(project);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("pid",id);
+        return ResponseResult.success(map);
+    }
+
+
+    @ApiOperation("更新项目")
     @PostMapping("/updateProject")
-    public ResponseResult updateProject(@RequestBody @ApiParam(value = "项目信息", required = true) Project project) {
+    public ResponseResult updateProject(@RequestBody @ApiParam(value = "项目信息: 带id", required = true) Project project){
         Integer id = userService.updateProject(project);
         HashMap<String, Object> map = new HashMap<>();
         map.put("pid",id);
         return ResponseResult.success(map);
     }
+
+
+
 
     @ApiOperation(("更新项目的文件"))
     @PostMapping("updateProjectDoc")
@@ -294,8 +297,8 @@ public class UserController {
 
     @ApiOperation("获取项目的各种所有文件 若doctype=null 则返回所有")
     @GetMapping("/getProjectDocs")
-    public ResponseResult getProjectDocs(@RequestParam @ApiParam(value = "项目id", required = false) Integer pid,
-                                         @RequestParam @ApiParam(value = "文件类型", required = false) String doctype){
+    public ResponseResult getProjectDocs(@RequestParam @ApiParam(value = "项目id", required = true) Integer pid,
+                                         @RequestParam(required = false) @ApiParam(value = "文件类型", required = false) String doctype){
        List<DocumentFile> files = userService.getProjectDocs(pid,doctype);
        return ResponseResult.success(files);
     }
