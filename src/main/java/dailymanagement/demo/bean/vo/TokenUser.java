@@ -27,4 +27,12 @@ public class TokenUser {
     public void setRealname(String realname) {
         this.realname = realname;
     }
+
+    @Override
+    public String toString() {
+        return "TokenUser{" +
+                "unam='" + unam + '\'' +
+                ", realname='" + realname + '\'' +
+                '}';
+    }
 }

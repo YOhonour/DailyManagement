@@ -1,9 +1,12 @@
 package dailymanagement.demo.interceptor;
 
 import dailymanagement.demo.annotation.UserLogin;
+import dailymanagement.demo.bean.vo.TokenUser;
 import dailymanagement.demo.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.SignatureException;
+
+import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,8 +81,10 @@ public class LoginInterceptor implements HandlerInterceptor {
             }catch (Exception e){
                 throw new SignatureException(jwtUtil.getHeader() + "失效，请重新登录。");
             }
+            //将Map转换成对象
+            TokenUser tokenUser = (TokenUser) JSONObject.toBean(JSONObject.fromObject(claims.get(JwtUtil.USER)),TokenUser.class);
             //向后传递用户信息
-            request.setAttribute(JwtUtil.USER,claims.get(JwtUtil.USER));
+            request.setAttribute(JwtUtil.USER,tokenUser);
         }
         return true;
     }

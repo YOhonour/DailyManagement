@@ -3,21 +3,34 @@ package dailymanagement.demo;
 import dailymanagement.demo.bean.PlanAndSummary;
 import dailymanagement.demo.bean.Project;
 import dailymanagement.demo.bean.Userinfo;
+import dailymanagement.demo.bean.vo.Login;
 import dailymanagement.demo.bean.vo.PlatFormUser;
+import dailymanagement.demo.bean.vo.TokenUser;
+import dailymanagement.demo.controller.BlogController;
 import dailymanagement.demo.controller.InfoShareController;
+import dailymanagement.demo.controller.LoginController;
 import dailymanagement.demo.controller.UserController;
 import dailymanagement.demo.exception.MyException;
 import dailymanagement.demo.mapper.ProjectMapper;
 import dailymanagement.demo.mapper.UserinfoMapper;
+import dailymanagement.demo.utils.JwtUtil;
 import dailymanagement.demo.utils.ResponseResult;
+import io.jsonwebtoken.Claims;
+import net.sf.json.JSONObject;
 import org.apache.catalina.User;
+import org.apache.http.HttpRequest;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 
 @SpringBootTest
 class DemoApplicationTests {
@@ -34,7 +47,14 @@ class DemoApplicationTests {
     @Autowired
     private InfoShareController infoShareController;
 
+    @Autowired
+    private LoginController loginController;
 
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    @Autowired
+    private BlogController blogController;
 
     @Test
     void contextLoads() {
@@ -75,7 +95,35 @@ class DemoApplicationTests {
 //        System.out.println(project.getProgress());
 //        ResponseResult detail = userController.getUserProjectDetail(29);
 //        System.out.println(detail.getData());
-        infoShareController.getBookType1(null);
+//        infoShareController.getBookType1(null);
+        String blog = blogController.getAllBlogByType("服务器", "2018210340");
+        System.out.println(blog);
     }
+
+
+/*
+    @Test
+    void login(){
+        Login login = new Login();
+        login.setUsername("admin");
+        login.setPassword("123456");
+        loginController.login(login);
+    }*/
+
+
+/*    @Test
+    void insertUser() throws FileNotFoundException {
+        FileInputStream inputStream = new FileInputStream(new File("C:\\Users\\11726\\Desktop\\chenyuan.csv"));
+        Scanner in = new Scanner(inputStream);
+        String unam ="";
+        while (in.hasNext()){
+            unam = in.next();
+            System.out.println(unam);
+            userinfoMapper.insertUser(unam);
+        }
+    }*/
+
+
+
 
 }

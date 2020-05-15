@@ -4,11 +4,11 @@ import dailymanagement.demo.bean.Blog;
 import dailymanagement.demo.bean.Book;
 import dailymanagement.demo.bean.Userinfo;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 @Mapper
-@Component
+@Repository
 public interface BlogMapper {
 
     int deleteByPrimaryKey(Integer bid);

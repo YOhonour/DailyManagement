@@ -23,7 +23,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/show")
-@UserLogin(required = false)
+@UserLogin(required = true)
 public class ShowController {
 
 

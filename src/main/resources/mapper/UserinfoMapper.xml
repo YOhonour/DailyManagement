@@ -171,7 +171,7 @@
       <if test="sex != null">
         sex = #{sex,jdbcType=CHAR},
       </if>
-      <if test="upath != null">
+      <if test="upath != null and upath != ''">
         upath = #{upath,jdbcType=VARCHAR},
       </if>
       <if test="school != null">
@@ -208,7 +208,8 @@
         mail = #{mail,jdbcType=CHAR}
       </if>
     </set>
-    where uid = #{uid,jdbcType=INTEGER}
+    where unam = #{unam,jdbcType=INTEGER}
+    or uid = #{uid}
   </update>
   <update id="updatePassword">
     update userinfo set password = #{password} where unam = #{username}
@@ -232,7 +233,8 @@
       weibo = #{weibo,jdbcType=CHAR},
       mail = #{mail,jdbcType=CHAR},
       password = #{password,jdbcType=VARCHAR}
-    where uid = #{uid,jdbcType=INTEGER}
+    where unam = #{unam,jdbcType=INTEGER}
+          or uid = #{uid}
   </update>
 
   <insert id="savefile" parameterType="dailymanagement.demo.bean.DocumentFile" keyColumn="fid" keyProperty="fid" useGeneratedKeys="true">
@@ -267,5 +269,9 @@
   from userinfo
   where uid = #{uid,jdbcType=INTEGER}
   </select>
+
+  <insert id="insertUser">
+    insert into userinfo(unam) values(#{unam});
+  </insert>
 
 </mapper>

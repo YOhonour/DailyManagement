@@ -13,6 +13,26 @@ public class Blog {
 
     private Integer likenum;
 
+    private  String url;
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getIntroduce() {
+        return introduce;
+    }
+
+    public void setIntroduce(String introduce) {
+        this.introduce = introduce;
+    }
+
+    private  String introduce;
+
     public Integer getBid() {
         return bid;
     }

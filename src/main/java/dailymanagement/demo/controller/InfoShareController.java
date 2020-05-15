@@ -38,7 +38,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/infoshare")
-@UserLogin(required = false)
+@UserLogin(required = true)
 public class InfoShareController {
 
     //用于提交表单时将String转换为以下设置的Date格式

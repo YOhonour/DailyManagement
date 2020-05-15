@@ -4,27 +4,22 @@ import dailymanagement.demo.annotation.UserLogin;
 import dailymanagement.demo.bean.*;
 import dailymanagement.demo.service.BlogService;
 import dailymanagement.demo.service.BrainstormService;
+import dailymanagement.demo.service.LikeService;
 import dailymanagement.demo.service.impl.BrainChatServiceImpl;
 import dailymanagement.demo.service.impl.FileService;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 @Controller
-@UserLogin(required = false)
+@UserLogin(required = true)
 @RequestMapping("/api")
 public class BlogController {
     @Autowired
@@ -37,6 +32,8 @@ public class BlogController {
     BrainChatServiceImpl brainChatServiceImpl;
     @Autowired
     FileService fileService;
+    @Autowired
+    LikeService likeService;
 
     @GetMapping("/blogs")
     @ResponseBody
@@ -53,7 +50,8 @@ public class BlogController {
                 collection = true;
             }
             List<String> userinfo = blogService.findUserNameAndPhoto(blog.getAuthorid());
-            resultlist.add(new BlogResult(blog, true, collection, userinfo));
+            int islike = likeService.findEntityLikeStatus(userid, blog.getBid());
+            resultlist.add(new BlogResult(blog, islike == 1, collection, userinfo));
         }
         session.setAttribute("bloglist", list);
         jsonObject.put("code", "200");
@@ -65,7 +63,7 @@ public class BlogController {
     @GetMapping("/blogs/by/type")
     @ResponseBody
     @ApiOperation(value = "获取所有博客 通过类型筛选", notes = "参数： <br>1、类型 如 产品 <br>")
-    public String getAllBlogByType(HttpSession esession, String type, String name) {
+    public String getAllBlogByType( String type, String name) {
         int userid = blogService.finduserid(name);
         JSONObject jsonObject = new JSONObject();
         List<Blog> list = blogService.getallbytypeid(type);
@@ -77,7 +75,8 @@ public class BlogController {
                 collection = true;
             }
             List<String> userinfo = blogService.findUserNameAndPhoto(blog.getAuthorid());
-            resultlist.add(new BlogResult(blog, true, collection, userinfo));
+            int islike = likeService.findEntityLikeStatus(userid, blog.getBid());
+            resultlist.add(new BlogResult(blog, islike == 1, collection, userinfo));
         }
         jsonObject.put("code", "200");
         jsonObject.put("message", "success");
@@ -100,7 +99,8 @@ public class BlogController {
                 collection = true;
             }
             List<String> userinfo = blogService.findUserNameAndPhoto(blog.getAuthorid());
-            resultlist.add(new BlogResult(blog, true, collection, userinfo));
+            int islike = likeService.findEntityLikeStatus(userId, blog.getBid());
+            resultlist.add(new BlogResult(blog, islike == 1, collection, userinfo));
         }
         session.setAttribute("bloglist", list);
         jsonObject.put("code", "200");
@@ -114,7 +114,7 @@ public class BlogController {
     @ResponseBody
     @ApiOperation(value = "发布博客", notes = "参数： <br>1、name 用户名字2,blog 类型 3,博客内容 comment  4,MultipartFile file 上传的图片 <br>")
     public String pubulishBlog(HttpSession session, String name, String type, String comment,
-                               @RequestParam("file") MultipartFile file) {
+                               @RequestParam("file") MultipartFile file, String url2, String introduce) {
         int userId = blogService.finduserid(name);
         JSONObject jsonObject = new JSONObject();
         Blog blog = new Blog();
@@ -123,6 +123,8 @@ public class BlogController {
         String url = fileService.upload(file);
         blog.setFilepath(url);
         blog.setAuthorid(userId);
+        blog.setUrl(url2);
+        blog.setIntroduce(introduce);
         int result = blogService.publishBlog(userId, blog);
         jsonObject.put("code", "200");
         jsonObject.put("message", "success");
@@ -134,8 +136,10 @@ public class BlogController {
     @PostMapping("/blog/like")
     @ResponseBody
     @ApiOperation(value = "点赞博客", notes = "参数： <br>1、博客id  2 ,model: 模式 赞还是取消赞  1 代表点赞 -1 代表取消赞<br>")
-    public String bloglike(HttpSession session, int blogId, int model) {//model 1 代表点赞 -1 代表取消赞
+    public String bloglike(HttpSession session, int blogId, int model, String name) {//model 1 代表点赞 -1 代表取消赞
         JSONObject jsonObject = new JSONObject();
+        int userId = blogService.finduserid(name);//redis
+        likeService.like(userId, blogId, model);
         int i = blogService.like(blogId, model);
         jsonObject.put("code", "200");
         jsonObject.put("message", "success");
@@ -223,7 +227,8 @@ public class BlogController {
                 collection = true;
             }
             List<String> userinfo = blogService.findUserNameAndPhoto(blog.getAuthorid());
-            resultlist.add(new BlogResult(blog, true, collection, userinfo));
+            int islike = likeService.findEntityLikeStatus(userId, blog.getBid());
+            resultlist.add(new BlogResult(blog, islike == 1, collection, userinfo));
         }
         jsonObject.put("code", "200");
         jsonObject.put("message", "success");
@@ -307,7 +312,8 @@ public class BlogController {
                 collection = true;
             }
             List<String> userinfo = blogService.findUserNameAndPhoto(blog.getAuthorid());
-            resultlist.add(new BlogResult(blog, true, collection, userinfo));
+            int islike = likeService.findEntityLikeStatus(userid, blog.getBid());
+            resultlist.add(new BlogResult(blog, islike == 1, collection, userinfo));
         }
         jsonObject.put("code", "200");
         jsonObject.put("message", "success");

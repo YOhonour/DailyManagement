@@ -32,7 +32,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/api/user")
 @Api(tags = "用户相关")
-@UserLogin(required = false)
+@UserLogin(required = true)
 public class UserController {
 
     @Autowired
