@@ -4,6 +4,7 @@ import dailymanagement.demo.annotation.UserLogin;
 import dailymanagement.demo.bean.Project;
 import dailymanagement.demo.service.ProjectService;
 import dailymanagement.demo.utils.JsonDateValueProcessor;
+import dailymanagement.demo.utils.ResponseResult;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
@@ -41,10 +42,9 @@ public class ShowController {
      * @return 项目list表
      */
     @GetMapping("/ing")
-    public String getIngProject(HttpSession session){
+    public ResponseResult getIngProject() {
         JsonConfig jsonConfig = new JsonConfig();
         jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
-        JSONObject jsonObject = new JSONObject();
 
         List<Project> projects = projectService.getAll();
         List<Project> list = new LinkedList<>();
@@ -64,12 +64,8 @@ public class ShowController {
                 list.add(project);
             }
         }
-        jsonObject.put("code","200");
-        jsonObject.put("message","success");
         JSONArray jsonArray = JSONArray.fromObject(list,jsonConfig);
-        jsonObject.put("data",jsonArray);
-        session.setAttribute("ing",list);
-        return jsonObject.toString();
+        return ResponseResult.success(jsonArray);
     }
 
     /**
@@ -77,10 +73,9 @@ public class ShowController {
      * @return 项目名称
      */
     @GetMapping("/end")
-    public String getEndProject(HttpSession session){
+    public ResponseResult getEndProject() {
         JsonConfig jsonConfig = new JsonConfig();
         jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
-        JSONObject jsonObject = new JSONObject();
 
         List<Project> projects = projectService.getAll();
         List<Project> list = new LinkedList<>();
@@ -100,12 +95,8 @@ public class ShowController {
                 list.add(project);
             }
         }
-        jsonObject.put("code","200");
-        jsonObject.put("message","success");
         JSONArray jsonArray = JSONArray.fromObject(list,jsonConfig);
-        jsonObject.put("data",jsonArray);
-        session.setAttribute("end",list);
-        return jsonObject.toString();
+        return ResponseResult.success(jsonArray);
     }
 
 

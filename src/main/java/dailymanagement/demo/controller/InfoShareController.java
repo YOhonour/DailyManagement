@@ -10,6 +10,8 @@ import dailymanagement.demo.service.DocumentFileService;
 import dailymanagement.demo.service.VipService;
 import dailymanagement.demo.service.VipTypeService;
 import dailymanagement.demo.utils.JsonDateValueProcessor;
+import dailymanagement.demo.utils.ResponseResult;
+import dailymanagement.demo.utils.Status;
 import net.sf.json.JSON;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -67,27 +69,21 @@ public class InfoShareController {
      * @return 图书list表
      */
     @GetMapping("/allbook")
-    public String getAllBook(HttpSession session){
-        JSONObject jsonObject = new JSONObject();
+    public ResponseResult getAllBook() {
         List<Book> list = bookService.getAll();
         for (Book book: list){
             System.out.println(book.toString());
         }
-  //      session.setAttribute("booklist",list);
-        jsonObject.put("code","200");
-        jsonObject.put("message","success");
-        jsonObject.put("data",list);
-        return jsonObject.toString();
+        return ResponseResult.success(list);
     }
 
     /**
      * 获取1类型(服务器)书籍
-     * @param session
+     * @param
      * @return
      */
     @GetMapping("/book1")
-    public String getBookType1(HttpSession session){
-        JSONObject jsonObject = new JSONObject();
+    public ResponseResult getBookType1() {
         List<Book> list = bookService.getAll();
         List<Book> books = new ArrayList<>();
         for (Book book: list){
@@ -96,21 +92,16 @@ public class InfoShareController {
                 System.out.println(book.toString());
             }
         }
-        jsonObject.put("code","200");
-        jsonObject.put("message","success");
-        jsonObject.put("data",books);
-       // session.setAttribute("book1",books);
-        return jsonObject.toString();
+        return ResponseResult.success(books);
     }
 
     /**
      * 获取2类型(客户端)书籍
-     * @param session
+     * @param
      * @return
      */
     @GetMapping("/book2")
-    public String getBookType2(HttpSession session){
-        JSONObject jsonObject = new JSONObject();
+    public ResponseResult getBookType2() {
         List<Book> list = bookService.getAll();
         List<Book> books = new ArrayList<>();
         for (Book book: list){
@@ -119,21 +110,16 @@ public class InfoShareController {
                 System.out.println(book.toString());
             }
         }
-        jsonObject.put("code","200");
-        jsonObject.put("message","success");
-        jsonObject.put("data",books);
-        session.setAttribute("book1",books);
-        return jsonObject.toString();
+        return ResponseResult.success(books);
     }
 
     /**
      * 获取3类型书(产品)籍
-     * @param session
+     * @param
      * @return
      */
     @GetMapping("/book3")
-    public String getBookType3(HttpSession session){
-        JSONObject jsonObject = new JSONObject();
+    public ResponseResult getBookType3() {
         List<Book> list = bookService.getAll();
         List<Book> books = new ArrayList<>();
         for (Book book: list){
@@ -142,21 +128,16 @@ public class InfoShareController {
                 System.out.println(book.toString());
             }
         }
-        jsonObject.put("code","200");
-        jsonObject.put("message","success");
-        jsonObject.put("data",books);
-        session.setAttribute("book1",books);
-        return jsonObject.toString();
+        return ResponseResult.success(books);
     }
 
     /**
      * 获取4类型(硬件)书籍
-     * @param session
+     * @param
      * @return
      */
     @GetMapping("/book4")
-    public String getBookType4(HttpSession session){
-        JSONObject jsonObject = new JSONObject();
+    public ResponseResult getBookType4() {
         List<Book> list = bookService.getAll();
         List<Book> books = new ArrayList<>();
         for (Book book: list){
@@ -165,11 +146,7 @@ public class InfoShareController {
                 System.out.println(book.toString());
             }
         }
-        jsonObject.put("code","200");
-        jsonObject.put("message","success");
-        jsonObject.put("data",books);
-        session.setAttribute("book1",books);
-        return jsonObject.toString();
+        return ResponseResult.success(books);
     }
 
     /**
@@ -178,11 +155,10 @@ public class InfoShareController {
      *         添加失败：failed
      */
     @PostMapping("/insertbook")
-    public String insertBook(@RequestParam String bname, @RequestParam String introduction,
-                             @RequestParam String btype,
-                             @RequestParam("file") MultipartFile uploadFile,
-                             HttpSession session, HttpServletRequest request)throws IOException{
-        JSONObject jsonObject = new JSONObject();
+    public ResponseResult insertBook(@RequestParam String bname, @RequestParam String introduction,
+                                     @RequestParam String btype,
+                                     @RequestParam("file") MultipartFile uploadFile,
+                                     HttpServletRequest request) throws IOException {
         String realPath = request.getSession().getServletContext().getRealPath("/uploadImage");
         File dir = new File(realPath);
         if (!dir.isDirectory()){
@@ -200,77 +176,60 @@ public class InfoShareController {
                 request.getServerPort() +
                 "/uploadImage/" + filename;
         //保存可供访问的网络路径并将filePath存进book的fpath中
-        session.setAttribute("iPath",iPath);
         Book book = new Book();
         book.setBname(bname);
         book.setIntroduction(introduction);
         book.setIpath(iPath);
         book.setBtype(btype);
         int result = bookService.insert(book);
-
-        jsonObject.put("code","200");
-        jsonObject.put("message","success");
         System.out.println(book);
-        jsonObject.put("code","200");
-        jsonObject.put("data",book);
-        session.setAttribute("book",book);
-        return jsonObject.toString();
+        return ResponseResult.success(book);
 
     }
 
     /**
      * 通过书名查询
      * @param bname
-     * @param session
+     * @param
      * @return
      */
     @GetMapping("/findbook")
-    public String findBookByName(@RequestParam String bname, HttpSession session){
-        JSONObject jsonObject = new JSONObject();
+    public ResponseResult findBookByName(@RequestParam String bname) {
         List<Book> list = bookService.findByName(bname);
         for (Book book: list){
             System.out.println(book.toString());
         }
-        jsonObject.put("code",200);
-        jsonObject.put("message","success");
-        jsonObject.put("data",list);
-        session.setAttribute("booklist",list);
-        return jsonObject.toString();
+        return ResponseResult.success(list);
     }
 
 
     /**
      * 获取所有会员类型
-     * @param session
+     * @param
      * @return
      */
     @GetMapping("/allviptype")
-    public String getAllVipType(HttpSession session){
+    public ResponseResult getAllVipType() {
         JsonConfig jsonConfig = new JsonConfig();
         jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
-        JSONObject jsonObject = new JSONObject();
         List<VipType> list = vipTypeService.getAll();
         for (VipType vipType: list){
             System.out.println(vipType);
         }
         JSONArray jsonArray = JSONArray.fromObject(list,jsonConfig);
-        jsonObject.put("code","200");
-        jsonObject.put("message","seccess");
-        jsonObject.put("data",jsonArray);
-        return jsonObject.toString();
+        return ResponseResult.success(jsonArray);
     }
 
 
     /**
      * 获取迅雷会员
-     * @param session
+     * @param
      * @return
      */
-    @GetMapping("/vip/xunlei")
-    public String getXunleiVip(HttpSession session){
+    @GetMapping("/vip/{type}")
+    public ResponseResult getXunleiVip() {
         JsonConfig jsonConfig = new JsonConfig();
         jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
-        JSONObject jsonObject = new JSONObject() ;
         List<Vip> list = vipService.getAll();
         List<Vip> vips = new ArrayList<>();
         for (Vip vip: list){
@@ -280,31 +239,25 @@ public class InfoShareController {
                 System.out.println(vip.toString());
             }
         }
-        jsonObject.put("code","200");
-        jsonObject.put("message","success");
         JSONArray jsonArray = JSONArray.fromObject(vips, jsonConfig);
-        jsonObject.put("data",jsonArray);
-        session.setAttribute("viplist",list);
-        return jsonObject.toString();
+        return ResponseResult.success(jsonArray);
     }
 
 
     /**
      * 获取爱奇艺会员
-     * @param session
+     * @param
      * @return
      */
-    @GetMapping("/vip/aiqiyi")
-    public String getAiqiyiVip(HttpSession session){
+    @GetMapping("/vip/{type}")
+    public ResponseResult getAiqiyiVip() {
         JsonConfig jsonConfig = new JsonConfig();
         jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
-        JSONObject jsonObject = new JSONObject() ;
         List<Vip> list = vipService.getAll();
         List<Vip> vips = new ArrayList<>();
         if(list == null){
             //获取失败
-            jsonObject.put("code","400");
-            jsonObject.put("message","failed");
+            return ResponseResult.failure(Status.NotFound);
         } else {
             //获取成功
             for (Vip vip: list) {
@@ -314,31 +267,25 @@ public class InfoShareController {
                 }
 
             }
-            jsonObject.put("code","200");
-            jsonObject.put("message","success");
         }
         JSONArray jsonArray = JSONArray.fromObject(vips, jsonConfig);
-        jsonObject.put("data",jsonArray);
-        session.setAttribute("viplist",list);
-        return jsonObject.toString();
+        return ResponseResult.success(jsonArray);
     }
 
     /**
      * 获取腾讯会员
-     * @param session
+     * @param
      * @return
      */
-    @GetMapping("/vip/tengxun")
-    public String getTengxunVip(HttpSession session){
+    @GetMapping("/vip/{type}")
+    public ResponseResult getTengxunVip() {
         JsonConfig jsonConfig = new JsonConfig();
         jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
-        JSONObject jsonObject = new JSONObject() ;
         List<Vip> list = vipService.getAll();
         List<Vip> vips = new ArrayList<>();
         if(list == null){
             //获取失败
-            jsonObject.put("code","400");
-            jsonObject.put("message","failed");
+            return ResponseResult.failure(Status.NotFound);
         } else {
             //获取成功
             for (Vip vip: list) {
@@ -348,31 +295,25 @@ public class InfoShareController {
                 }
 
             }
-            jsonObject.put("code","200");
-            jsonObject.put("message","success");
         }
         JSONArray jsonArray = JSONArray.fromObject(vips, jsonConfig);
-        jsonObject.put("data",jsonArray);
-        session.setAttribute("viplist",list);
-        return jsonObject.toString();
+        return ResponseResult.success(jsonArray);
     }
 
     /**
      * 获取百度网盘会员
-     * @param session
+     * @param
      * @return
      */
-    @GetMapping("/vip/baiduwangpan")
-    public String getBaiduVip(HttpSession session){
+    @GetMapping("/vip/{type}")
+    public ResponseResult getBaiduVip() {
         JsonConfig jsonConfig = new JsonConfig();
         jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
-        JSONObject jsonObject = new JSONObject() ;
         List<Vip> list = vipService.getAll();
         List<Vip> vips = new ArrayList<>();
         if(list == null){
             //获取失败
-            jsonObject.put("code","400");
-            jsonObject.put("message","failed");
+            return ResponseResult.failure(Status.NotFound);
         } else {
             //获取成功
             for (Vip vip: list) {
@@ -380,33 +321,26 @@ public class InfoShareController {
                     vips.add(vip);
                     System.out.println(vip.toString());
                 }
-
             }
-            jsonObject.put("code","200");
-            jsonObject.put("message","success");
         }
         JSONArray jsonArray = JSONArray.fromObject(vips, jsonConfig);
-        jsonObject.put("data",jsonArray);
-        session.setAttribute("viplist",list);
-        return jsonObject.toString();
+        return ResponseResult.success(jsonArray);
     }
 
     /**
      * 获取csdn会员
-     * @param session
+     * @param
      * @return
      */
-    @GetMapping("/vip/csdn")
-    public String getCsdnVip(HttpSession session){
+    @GetMapping("/vip/{type}")
+    public ResponseResult getCsdnVip() {
         JsonConfig jsonConfig = new JsonConfig();
         jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
-        JSONObject jsonObject = new JSONObject() ;
         List<Vip> list = vipService.getAll();
         List<Vip> vips = new ArrayList<>();
         if(list == null){
             //获取失败
-            jsonObject.put("code","400");
-            jsonObject.put("message","failed");
+            return ResponseResult.failure(Status.NotFound);
         } else {
             //获取成功
             for (Vip vip: list) {
@@ -416,31 +350,25 @@ public class InfoShareController {
                 }
 
             }
-            jsonObject.put("code","200");
-            jsonObject.put("message","success");
         }
         JSONArray jsonArray = JSONArray.fromObject(vips, jsonConfig);
-        jsonObject.put("data",jsonArray);
-        session.setAttribute("viplist",list);
-        return jsonObject.toString();
+        return ResponseResult.success(jsonArray);
     }
 
     /**
      * 获取百度文库会员
-     * @param session
+     * @param
      * @return
      */
-    @GetMapping("/vip/baiduwenku")
-    public String getBaiDuWenKuVip(HttpSession session){
+    @GetMapping("/vip/{type}")
+    public ResponseResult getBaiDuWenKuVip() {
         JsonConfig jsonConfig = new JsonConfig();
         jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
-        JSONObject jsonObject = new JSONObject() ;
         List<Vip> list = vipService.getAll();
         List<Vip> vips = new ArrayList<>();
         if(list == null){
             //获取失败
-            jsonObject.put("code","400");
-            jsonObject.put("message","failed");
+            return ResponseResult.failure(Status.NotFound);
         } else {
             //获取成功
             for (Vip vip: list) {
@@ -448,33 +376,26 @@ public class InfoShareController {
                     vips.add(vip);
                     System.out.println(vip.toString());
                 }
-
             }
-            jsonObject.put("code","200");
-            jsonObject.put("message","success");
         }
         JSONArray jsonArray = JSONArray.fromObject(vips, jsonConfig);
-        jsonObject.put("data",jsonArray);
-        session.setAttribute("viplist",list);
-        return jsonObject.toString();
+        return ResponseResult.success(jsonArray);
     }
 
     /**
      * 获取寻图会员
-     * @param session
+     * @param
      * @return
      */
-    @GetMapping("/vip/xuntu")
-    public String getXunTuVip(HttpSession session){
+    @GetMapping("/vip/{type}")
+    public ResponseResult getXunTuVip() {
         JsonConfig jsonConfig = new JsonConfig();
         jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
-        JSONObject jsonObject = new JSONObject() ;
         List<Vip> list = vipService.getAll();
         List<Vip> vips = new ArrayList<>();
         if(list == null){
             //获取失败
-            jsonObject.put("code","400");
-            jsonObject.put("message","failed");
+            return ResponseResult.failure(Status.NotFound);
         } else {
             //获取成功
             for (Vip vip: list) {
@@ -482,33 +403,26 @@ public class InfoShareController {
                     vips.add(vip);
                     System.out.println(vip.toString());
                 }
-
             }
-            jsonObject.put("code","200");
-            jsonObject.put("message","success");
         }
         JSONArray jsonArray = JSONArray.fromObject(vips, jsonConfig);
-        jsonObject.put("data",jsonArray);
-        session.setAttribute("viplist",list);
-        return jsonObject.toString();
+        return ResponseResult.success(jsonArray);
     }
 
     /**
      * 获取千图网会员
-     * @param session
+     * @param
      * @return
      */
-    @GetMapping("/vip/qiantuwang")
-    public String getQianTuVip(HttpSession session){
+    @GetMapping("/vip/{type}")
+    public ResponseResult getQianTuVip() {
         JsonConfig jsonConfig = new JsonConfig();
         jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
-        JSONObject jsonObject = new JSONObject() ;
         List<Vip> list = vipService.getAll();
         List<Vip> vips = new ArrayList<>();
         if(list == null){
             //获取失败
-            jsonObject.put("code","400");
-            jsonObject.put("message","failed");
+            return ResponseResult.failure(Status.NotFound);
         } else {
             //获取成功
             for (Vip vip: list) {
@@ -516,33 +430,26 @@ public class InfoShareController {
                     vips.add(vip);
                     System.out.println(vip.toString());
                 }
-
             }
-            jsonObject.put("code","200");
-            jsonObject.put("message","success");
         }
         JSONArray jsonArray = JSONArray.fromObject(vips, jsonConfig);
-        jsonObject.put("data",jsonArray);
-        session.setAttribute("viplist",list);
-        return jsonObject.toString();
+        return ResponseResult.success(jsonArray);
     }
 
     /**
      * 获取其它会员
-     * @param session
+     * @param
      * @return
      */
-    @GetMapping("/vip/others")
-    public String getOtherVip(HttpSession session){
+    @GetMapping("/vip/{type}")
+    public ResponseResult getOtherVip() {
         JsonConfig jsonConfig = new JsonConfig();
         jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
-        JSONObject jsonObject = new JSONObject() ;
         List<Vip> list = vipService.getAll();
         List<Vip> vips = new ArrayList<>();
         if(list == null){
             //获取失败
-            jsonObject.put("code","400");
-            jsonObject.put("message","failed");
+            return ResponseResult.failure(Status.NotFound);
         } else {
             //获取成功
             for (Vip vip: list) {
@@ -550,24 +457,19 @@ public class InfoShareController {
                     vips.add(vip);
                     System.out.println(vip.toString());
                 }
-
             }
-            jsonObject.put("code","200");
-            jsonObject.put("message","success");
         }
         JSONArray jsonArray = JSONArray.fromObject(vips, jsonConfig);
-        jsonObject.put("data",jsonArray);
-        session.setAttribute("viplist",list);
-        return jsonObject.toString();
+        return ResponseResult.success(jsonArray);
     }
 
     /**
      * 添加会员
-     * @param session
+     * @param
      * @return
      */
     @PostMapping("/insertvip")
-    public String insertVip(Vip vip, HttpSession session){
+    public ResponseResult insertVip(Vip vip) {
         JsonConfig jsonConfig = new JsonConfig();
         jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
         JSONObject jsonObject = new JSONObject();
@@ -594,76 +496,60 @@ public class InfoShareController {
         int result = vipService.insert(vip);
         if (result == 0){
             //添加失败
-            jsonObject.put("code","400");
-            jsonObject.put("message","failed");
+            return ResponseResult.failure(Status.NotFound);
         } else {
             //添加成功
             System.out.println(vip.toString());
-            jsonObject.put("code","200");
-            jsonObject.put("message","success");
         }
         JSONObject jsonObject1 = jsonObject.fromObject(vip,jsonConfig);
-        jsonObject.put("data",jsonObject1);
-        session.setAttribute("vip",vip);
-        return jsonObject.toString();
+        return ResponseResult.success(jsonObject1);
     }
 
     /**
      * 通过名称查询会员
      * @param vnam
-     * @param session
+     * @param
      * @return
      */
     @GetMapping("/findvip")
-    public String findVipByName(@RequestParam String vnam, HttpSession session){
+    public ResponseResult findVipByName(@RequestParam String vnam) {
         JsonConfig jsonConfig = new JsonConfig();
         jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
-        JSONObject jsonObject = new JSONObject();
         List<Vip> list = vipService.findByName(vnam);
         for (Vip vip: list){
             System.out.println(vip.toString());
         }
-        jsonObject.put("code","200");
-        jsonObject.put("message","success");
         JSONArray jsonArray = JSONArray.fromObject(list,jsonConfig);
-        jsonObject.put("data",jsonArray);
-        session.setAttribute("viplist",list);
-        return jsonObject.toString();
+        return ResponseResult.success(jsonArray);
     }
 
 
     /**
      * 获取全部文档文件
-     * @param session
+     * @param
      * @return
      */
     @GetMapping("/alldoc")
-    public String getAllDoc(HttpSession session){
+    public ResponseResult getAllDoc() {
         JsonConfig jsonConfig = new JsonConfig();
         jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
-        JSONObject jsonObject = new JSONObject();
         List<DocumentFile> list = documentFileService.getAll();
         for (DocumentFile documentFile: list){
             System.out.println(documentFile.toString());
         }
-        jsonObject.put("code","200");
-        jsonObject.put("message","success");
         JSONArray jsonArray = JSONArray.fromObject(list, jsonConfig);
-        jsonObject.put("data",jsonArray);
-        session.setAttribute("doclist",list);
-        return jsonObject.toString();
+        return ResponseResult.success(jsonArray);
     }
 
     /**
      * 获取1类型(项目汇报)文档
-     * @param session
+     * @param
      * @return
      */
     @GetMapping("/doc1")
-    public String getDocType1(HttpSession session){
+    public ResponseResult getDocType1() {
         JsonConfig jsonConfig = new JsonConfig();
         jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
-        JSONObject jsonObject = new JSONObject();
         List<DocumentFile> list = documentFileService.getAll();
         List<DocumentFile> documentFiles = new ArrayList<>();
         for (DocumentFile documentFile: list){
@@ -672,24 +558,19 @@ public class InfoShareController {
                 System.out.println(documentFile.toString());
             }
         }
-        jsonObject.put("code","200");
-        jsonObject.put("message","success");
         JSONArray jsonArray = JSONArray.fromObject(documentFiles,jsonConfig);
-        jsonObject.put("data",jsonArray);
-        session.setAttribute("doc1",documentFiles);
-        return jsonObject.toString();
+        return ResponseResult.success(jsonArray);
     }
 
     /**
      * 获取2类型(技术交流)文档
-     * @param session
+     * @param
      * @return
      */
     @GetMapping("/doc2")
-    public String getDocType2(HttpSession session){
+    public ResponseResult getDocType2() {
         JsonConfig jsonConfig = new JsonConfig();
         jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
-        JSONObject jsonObject = new JSONObject();
         List<DocumentFile> list = documentFileService.getAll();
         List<DocumentFile> documentFiles = new ArrayList<>();
         for (DocumentFile documentFile: list){
@@ -698,24 +579,19 @@ public class InfoShareController {
                 System.out.println(documentFile.toString());
             }
         }
-        jsonObject.put("code","200");
-        jsonObject.put("message","success");
         JSONArray jsonArray = JSONArray.fromObject(documentFiles,jsonConfig);
-        jsonObject.put("data",jsonArray);
-        session.setAttribute("doc2",documentFiles);
-        return jsonObject.toString();
+        return ResponseResult.success(jsonArray);
     }
 
     /**
      * 获取3类型(会议纪要)文档
-     * @param session
+     * @param
      * @return
      */
     @GetMapping("/doc3")
-    public String getDocType3(HttpSession session){
+    public ResponseResult getDocType3() {
         JsonConfig jsonConfig = new JsonConfig();
         jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
-        JSONObject jsonObject = new JSONObject();
         List<DocumentFile> list = documentFileService.getAll();
         System.out.println(list);
         List<DocumentFile> documentFiles = new ArrayList<>();
@@ -725,12 +601,8 @@ public class InfoShareController {
                 System.out.println(documentFile.toString());
             }
         }
-        jsonObject.put("code","200");
-        jsonObject.put("message","success");
         JSONArray jsonArray = JSONArray.fromObject(documentFiles,jsonConfig);
-        jsonObject.put("data",jsonArray);
-        session.setAttribute("doc3",documentFiles);
-        return jsonObject.toString();
+        return ResponseResult.success(jsonArray);
     }
 
 
@@ -738,15 +610,15 @@ public class InfoShareController {
      * 插入文档
      * @param documentFile
      * @param uploadFile
-     * @param session
+     * @param
      * @param request
      * @return
      * @throws IOException
      */
     @PostMapping("/insertdoc")
-    public String insertDoc(DocumentFile documentFile,
-                            @RequestParam("file") MultipartFile uploadFile,
-                            HttpSession session, HttpServletRequest request) throws IOException{
+    public ResponseResult insertDoc(DocumentFile documentFile,
+                                    @RequestParam("file") MultipartFile uploadFile,
+                                    HttpServletRequest request) throws IOException {
         JsonConfig jsonConfig = new JsonConfig();
         jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
         JSONObject jsonObject = new JSONObject();
@@ -774,8 +646,7 @@ public class InfoShareController {
         jsonObject.put("message","success");
         JSONObject jsonObject1 = JSONObject.fromObject(documentFile,jsonConfig);
         jsonObject.put("data",jsonObject1);
-        session.setAttribute("doc",documentFile);
-        return jsonObject.toString();
+        return ResponseResult.success(jsonObject1);
     }
 
 
@@ -784,24 +655,19 @@ public class InfoShareController {
      * @return
      */
     @GetMapping("/finddoc")
-    public String findByTimeorName(@RequestParam  String fname,
-                                   HttpSession session){
+    public ResponseResult findByTimeorName(@RequestParam String fname
+    ) {
         JsonConfig jsonConfig = new JsonConfig();
         Date time = new Date();
         jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
-        JSONObject jsonObject = new JSONObject();
         System.out.println(time);
         List<DocumentFile> list = documentFileService.findByTimeorName(fname,time);
         System.out.println(list.isEmpty());
         for(DocumentFile documentFile: list){
             System.out.println(documentFile.toString());
         }
-        jsonObject.put("code","200");
-        jsonObject.put("message","success");
         JSONArray jsonArray = JSONArray.fromObject(list, jsonConfig);
-        jsonObject.put("data",jsonArray);
-        session.setAttribute("doc",list);
-        return jsonObject.toString();
+        return ResponseResult.success(jsonArray);
     }
 }
 
