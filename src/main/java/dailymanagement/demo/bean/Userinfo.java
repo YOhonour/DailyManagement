@@ -207,5 +207,26 @@ public class Userinfo {
         this.uid = uid;
     }
 
-
+    @Override
+    public String toString() {
+        return "Userinfo{" +
+                "unam='" + unam + '\'' +
+                ", realname='" + realname + '\'' +
+                ", sex='" + sex + '\'' +
+                ", upath='" + upath + '\'' +
+                ", school='" + school + '\'' +
+                ", major='" + major + '\'' +
+                ", birthday=" + birthday +
+                ", jointime=" + jointime +
+                ", prjHistory='" + prjHistory + '\'' +
+                ", skills='" + skills + '\'' +
+                ", title='" + title + '\'' +
+                ", phone='" + phone + '\'' +
+                ", qq='" + qq + '\'' +
+                ", weibo='" + weibo + '\'' +
+                ", mail='" + mail + '\'' +
+                ", uid=" + uid +
+                ", platform='" + platform + '\'' +
+                '}';
+    }
 }

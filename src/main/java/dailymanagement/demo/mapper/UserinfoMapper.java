@@ -72,4 +72,7 @@ public interface UserinfoMapper {
     Userinfo selectByUserName(String name);
 
     Userinfo selectByuid(int id);
+
+
+    void insertUser(String unam);
 }

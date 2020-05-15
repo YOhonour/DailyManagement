@@ -18,14 +18,19 @@ import java.util.List;
 
 @Service
 public class BlogService implements BlogServiceImpl {
+
     @Autowired
     UserinfoMapper userinfoMapper;
+
     @Autowired
     BlogMapper blogMapper;
+
     @Autowired
     UserinfoCollectionMapper userinfoCollectionMapper;
+
     @Autowired
     BlogServiceImpl blogServiceImpl;
+    
 
     @Override
     public List<Blog> getall() {
